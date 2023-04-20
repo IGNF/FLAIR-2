@@ -1,0 +1,67 @@
+data:
+    #path_aerial_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_aerial_train/" 
+    path_aerial_train: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_aerial_train/"
+    
+    #path_aerial_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_aerial_test/" 
+    path_aerial_test: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_aerial_test/" 
+    
+    #path_sen_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_sen_train/" 
+    path_sen_train: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_sen_train/" 
+
+    #path_sen_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_sen_test/"
+    path_sen_test: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_sen_test/"
+    
+    #path_labels_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_labels_train/"
+    path_labels_train: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_labels_train/"
+    
+    #path_labels_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_labels_test/" 
+    path_labels_test: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_labels_test/" 
+
+    #path_sp_centroids: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/AUX/flair-2_centroids_sp_to_patch.json" 
+    path_sp_centroids: "/media/AGarioud/gopi_red/FLAIR-0-DATA/00_AUX/flair-2_centroids_sp_to_patch.json"     
+    
+    #path_metadata_aerial: "./flair-1_metadata_aerial.json" 
+    path_metadata_aerial: "/media/AGarioud/gopi_red/FLAIR-0-DATA/00_AUX/flair-2_metadata_aerial.json"    
+
+num_classes: 13
+num_channels: 5
+
+
+out_folder: "/home/AGarioud/Desktop/TESTING/"
+out_model_name: "flair2lib_test"
+
+
+num_workers: 10
+accelerator: gpu
+gpus_per_node: 1
+num_nodes: 1
+strategy:
+
+
+# Model
+encoder_widths: [64,64,128,128]
+decoder_widths: [64,64,128,128] #### RIGHT NOW NEEDS TO BE THE SAME. MODIFY OR MERGE PARAM ? 
+out_conv: [32, 13]
+str_conv_k: 4
+str_conv_s: 2
+str_conv_p: 1
+agg_mode: att_group
+encoder_norm: group
+n_head: 16
+d_model: 256
+d_k: 4
+
+
+# Training
+num_epochs: 3
+batch_size: 1
+lr: 0.001
+ref_year: 2021
+ref_date: 05-15
+ignore_index: -1
+pad_value: 0
+padding_mode: reflect
+
+
+enable_progress_bar: True
+progress_rate: 10

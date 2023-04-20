@@ -1,0 +1,167 @@
+import argparse
+import json
+import os
+import pickle as pkl
+import pprint
+import time
+from pathlib import Path 
+
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.utils.data as data
+
+from pytorch_lightning.loggers import TensorBoardLogger
+from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
+from pytorch_lightning.callbacks.progress.tqdm_progress import TQDMProgressBar
+from pytorch_lightning import Trainer, seed_everything
+
+
+from src.backbones import utae_model
+from src.backbones.txt_model import TimeTexture_flair
+from src.datamodule import DataModule
+from src.task_module import SegmentationTask
+from src.utils import *
+from src.load_data import load_data
+from src.prediction_writer import PredictionWriter
+from src.metrics import generate_miou
+
+
+argParser = argparse.ArgumentParser()
+argParser.add_argument("--config_file", help="Path to the .yml config file")
+
+
+def main(config):
+
+    seed_everything(2022, workers=True)
+    out_dir = Path(config["out_folder"], config["out_model_name"])
+    out_dir.mkdir(parents=True, exist_ok=True)
+    
+    d_train, d_val, d_test = load_data(config)
+
+    # Dataset definition
+    data_module = DataModule(
+        # folder=config.path_data,
+        dict_train=d_train,
+        dict_val=d_val,
+        dict_test=d_test,
+        batch_size=config["batch_size"],
+        num_workers=config["num_workers"],
+        drop_last=True,
+        pix_buff=40,
+        num_classes=config["num_classes"],
+        num_channels=5
+    )
+
+    model = TimeTexture_flair(config)
+
+
+    # Optimizer and Loss
+    optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])
+
+    weights = torch.ones(config["num_classes"]).float()
+    weights[config["ignore_index"]] = 0
+    criterion = nn.CrossEntropyLoss(weight=weights)
+    
+    seg_module = SegmentationTask(
+        model=model,
+        num_classes=config["num_classes"],
+        criterion=criterion,
+        optimizer=optimizer,
+        config=config
+    )
+
+    # Callbacks
+
+    ckpt_callback = ModelCheckpoint(
+        monitor="val_loss",
+        dirpath=os.path.join(out_dir,"checkpoints"),
+        filename="ckpt-{epoch:02d}-{val_loss:.2f}"+'_'+config["out_model_name"],
+        save_top_k=1,
+        mode="min",
+        save_weights_only=True, # can be changed accordingly
+    )
+
+    early_stop_callback = EarlyStopping(
+        monitor="val_loss",
+        min_delta=0.00,
+        patience=30, # if no improvement after 30 epoch, stop learning. 
+        mode="min",
+    )
+
+    prog_rate = TQDMProgressBar(refresh_rate=config["progress_rate"])
+
+    callbacks = [
+        ckpt_callback, 
+        early_stop_callback,
+        prog_rate,
+    ]
+
+    #Logger
+
+    logger = TensorBoardLogger(
+        save_dir=out_dir,
+        name=Path("tensorboard_logs"+'_'+config["out_model_name"]).as_posix()
+    )
+
+    loggers = [
+        logger
+    ]
+
+    # Train
+    trainer = Trainer(
+        accelerator=config["accelerator"],
+        devices=config["gpus_per_node"],
+        strategy=config["strategy"],
+        num_nodes=config["num_nodes"],
+        max_epochs=config["num_epochs"],
+        num_sanity_val_steps=0,
+        callbacks = callbacks,
+        logger=loggers,
+        enable_progress_bar = config["enable_progress_bar"],
+    )
+
+    trainer.fit(seg_module, datamodule=data_module)
+    
+    trainer.validate(seg_module, datamodule=data_module) 
+    
+    
+    # Predict
+    writer_callback = PredictionWriter(        
+        output_dir = os.path.join(out_dir, "predictions"+"_"+config["out_model_name"]),
+        write_interval = "batch",
+    )
+
+    #### instanciation of prediction Trainer
+    trainer = Trainer(
+        accelerator = config["accelerator"],
+        devices = config["gpus_per_node"],
+        strategy = config["strategy"],
+        num_nodes = config["num_nodes"],
+        callbacks = [writer_callback],
+        enable_progress_bar = config["enable_progress_bar"],
+    )
+
+    trainer.predict(seg_module, datamodule=data_module)
+    print('--  [FINISHED.]  --', f'output dir : {out_dir}', sep='\n')     
+    
+    
+    ## Compute mIoU over the predictions
+
+    truth_msk = config['data']['path_labels_test']
+    pred_msk  = os.path.join(out_dir, "predictions"+"_"+config["out_model_name"])
+    mIou, ious = generate_miou(truth_msk, pred_msk)
+    print_metrics(mIou, ious)      
+    
+ 
+
+if __name__ == "__main__":
+
+    args = argParser.parse_args()
+  
+    config = read_config(args.config_file)
+
+    assert config["num_classes"] == config["out_conv"][-1]
+
+    print_config(config)
+    main(config)
