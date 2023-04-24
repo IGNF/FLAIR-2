@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 from sklearn.metrics import confusion_matrix
 from pathlib import Path
-
+from pytorch_lightning.utilities.distributed import rank_zero_only 
 
 
 def generate_miou(path_truth: str, path_pred: str) -> list:

@@ -15,6 +15,7 @@ from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.callbacks.progress.tqdm_progress import TQDMProgressBar
 from pytorch_lightning import Trainer, seed_everything
+from pytorch_lightning.utilities.distributed import rank_zero_only 
 
 
 from src.backbones import utae_model
@@ -48,25 +49,32 @@ def main(config):
         batch_size=config["batch_size"],
         num_workers=config["num_workers"],
         drop_last=True,
-        pix_buff=40,
+        pix_buff=config['sat_patch_size'],
         num_classes=config["num_classes"],
-        num_channels=5
+        num_channels=config['num_channels_aerial']
     )
 
     model = TimeTexture_flair(config)
 
+    @rank_zero_only
+    def track_model():
+        print(model)
+    track_model()
 
     # Optimizer and Loss
     optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])
 
-    weights = torch.ones(config["num_classes"]).float()
-    weights[config["ignore_index"]] = 0
-    criterion = nn.CrossEntropyLoss(weight=weights)
+    #weights = torch.ones(config["num_classes"]).float()
+    with torch.no_grad():
+        weights_aer = torch.FloatTensor(np.array(list(config['weights_aerial_satellite'].values()))[:,0])
+        weights_sat = torch.FloatTensor(np.array(list(config['weights_aerial_satellite'].values()))[:,1])
+    criterion_vhr = nn.CrossEntropyLoss(weight=weights_aer)
+    criterion_hr = nn.CrossEntropyLoss(weight=weights_sat)
     
     seg_module = SegmentationTask(
         model=model,
         num_classes=config["num_classes"],
-        criterion=criterion,
+        criterion=nn.ModuleList([criterion_vhr, criterion_hr]),
         optimizer=optimizer,
         config=config
     )
@@ -143,7 +151,11 @@ def main(config):
     )
 
     trainer.predict(seg_module, datamodule=data_module)
-    print('--  [FINISHED.]  --', f'output dir : {out_dir}', sep='\n')     
+
+    @rank_zero_only
+    def print_finish():
+        print('--  [FINISHED.]  --', f'output dir : {out_dir}', sep='\n') 
+    print_finish()   
     
     
     ## Compute mIoU over the predictions

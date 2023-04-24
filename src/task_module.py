@@ -60,11 +60,11 @@ class SegmentationTask(pl.LightningModule):
         logits_utae, logits_unet = self.model(patch, spatch, dates, '')
 
         transform = T.CenterCrop(targets_sp.shape[-1])
-        logits_utae = transform(logits_utae)
+        logits_utae = transform(logits_utae).to(logits_utae.device)
 
-        loss_unet = self.criterion(logits_unet, targets)
-        loss_utae = self.criterion(logits_utae, targets_sp)       
-        loss = loss_utae + loss_unet
+        loss_unet = self.criterion[0](logits_unet, targets)
+        loss_utae = self.criterion[1](logits_utae, targets_sp)       
+        loss = loss_utae*0.5 + loss_unet*1.5
    
         with torch.no_grad():
             preds = logits_unet.argmax(dim=1)

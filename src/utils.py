@@ -10,7 +10,7 @@ from omegaconf import DictConfig, ListConfig, OmegaConf
 from rich import get_console
 from rich.style import Style
 from rich.tree import Tree
-
+from pytorch_lightning.utilities.distributed import rank_zero_only 
 
 
 
@@ -19,18 +19,8 @@ def read_config(file_path):
     with open(file_path, "r") as f:
         return yaml.safe_load(f)
 
-
-def print_recap(config, dict_train, dict_val, dict_test):
-    print('\n+'+'='*80+'+',f"{'Model name: '+config.out_model_name : ^80}", '+'+'='*80+'+', f"{'[---TASKING---]'}", sep='\n')
-    for info, val in zip(["use weights", "use metadata", "use augmentation"], [config.use_weights, config.use_metadata, config.use_augmentation]): print(f"- {info:25s}: {'':3s}{val}")
-    print('\n+'+'-'*80+'+', f"{'[---DATA SPLIT---]'}", sep='\n')
-    for split_name, d in zip(["train", "val", "test"], [dict_train, dict_val, dict_test]): print(f"- {split_name:25s}: {'':3s}{len(d['IMG'])} samples")
-    print('\n+'+'-'*80+'+', f"{'[---HYPER-PARAMETERS---]'}", sep='\n')
-    for info, val in zip(["batch size", "learning rate", "epochs", "nodes", "GPU per nodes", "accelerator", "workers"], [config.batch_size, config.learning_rate, config.num_epochs, config.num_nodes, config.gpus_per_node, config.accelerator, config.num_workers]): print(f"- {info:25s}: {'':3s}{val}")        
-    print('\n+'+'-'*80+'+', '\n')
-
     
-
+@rank_zero_only
 def print_metrics(miou, ious):
     classes = ['building','pervious surface','impervious surface','bare soil','water','coniferous','deciduous',
                'brushwood','vineyard','herbaceous vegetation','agricultural land','plowed land']
@@ -111,7 +101,7 @@ def pad_collate_predict(dict, pad_value=0):
     return batch
 
 
-
+@rank_zero_only
 def print_config(config: DictConfig) -> None:
     """Print content of given config using Rich library and its tree structure.
     Args: config: Config to print to console using a Rich tree.

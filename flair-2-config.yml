@@ -1,46 +1,61 @@
 data:
-    #path_aerial_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_aerial_train/" 
-    path_aerial_train: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_aerial_train/"
-    
-    #path_aerial_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_aerial_test/" 
-    path_aerial_test: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_aerial_test/" 
-    
-    #path_sen_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_sen_train/" 
-    path_sen_train: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_sen_train/" 
+    path_aerial_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_aerial_train/"     
+    #path_aerial_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_aerial_train"
 
-    #path_sen_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_sen_test/"
-    path_sen_test: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_sen_test/"
-    
-    #path_labels_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_labels_train/"
-    path_labels_train: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_labels_train/"
-    
-    #path_labels_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_labels_test/" 
-    path_labels_test: "/media/AGarioud/gopi_red/FLAIR-0-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_labels_test/" 
+    path_aerial_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_aerial_test/" 
+    #path_aerial_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_aerial_test"
 
-    #path_sp_centroids: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/AUX/flair-2_centroids_sp_to_patch.json" 
-    path_sp_centroids: "/media/AGarioud/gopi_red/FLAIR-0-DATA/00_AUX/flair-2_centroids_sp_to_patch.json"     
-    
-    #path_metadata_aerial: "./flair-1_metadata_aerial.json" 
-    path_metadata_aerial: "/media/AGarioud/gopi_red/FLAIR-0-DATA/00_AUX/flair-2_metadata_aerial.json"    
+    path_sen_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_sen_train/" 
+    #path_sen_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_sen_train"
 
+    path_sen_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_sen_test/"
+    #path_sen_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_sen_test"
+
+    path_labels_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_labels_train/"
+    #path_labels_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_labels_train/"
+
+    path_labels_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_labels_test/" 
+    #path_labels_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_labels_test"
+
+    path_sp_centroids: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/AUX/flair-2_centroids_sp_to_patch.json" 
+    path_metadata_aerial: "./flair-1_metadata_aerial.json" 
+
+
+out_folder: "/gpfsscratch/rech/tel/ubo93ds/flair_nb2_tests/"
+out_model_name: "flair2lib_test_summarize_40_nowei_2loss_15and05"
+
+# SLURM
+py_script: ./FLAIR2LIB-LAST/main.py
+job_name: "tt_summarize_40_nowei_2loss_15and05" 
+output_job: "./jobs/" 
+error_job: "./jobs/"
+
+# Inputs
 num_classes: 13
-num_channels: 5
+num_channels_aerial: 5 # fixed to 5 in dataloader
+num_channels_sat: 10 # fixed to 10 in dataloader
 
+#Fusion
+fusion: full  # summarize= featmap spatial dim squeezed; full= entire super-area featmap; cropped= featmap super-area cropped to aerial area
+sat_patch_size: 40 # > 8 & 112 & multiples of 8 : 16,24,32,40,48,56,64,72,80,88,96,104,112...
+ 
 
-out_folder: "/home/AGarioud/Desktop/TESTING/"
-out_model_name: "flair2lib_test"
+# Training
+num_epochs: 100
+batch_size: 5
+lr: 0.001
 
-
+# Computational
 num_workers: 10
 accelerator: gpu
-gpus_per_node: 1
-num_nodes: 1
-strategy:
+gpus_per_node: 4
+num_nodes: 3
+strategy: ddp
 
 
-# Model
-encoder_widths: [64,64,128,128]
-decoder_widths: [64,64,128,128] #### RIGHT NOW NEEDS TO BE THE SAME. MODIFY OR MERGE PARAM ? 
+# UTAE Model
+encoder_widths: [64,64,128,128] # 1st and last must be equivalent to decoder_widths
+decoder_widths: [64,64,128,128] # 1st and last must be equivalent to encoder_widths
 out_conv: [32, 13]
 str_conv_k: 4
 str_conv_s: 2
@@ -50,18 +65,30 @@ encoder_norm: group
 n_head: 16
 d_model: 256
 d_k: 4
-
-
-# Training
-num_epochs: 3
-batch_size: 1
-lr: 0.001
 ref_year: 2021
 ref_date: 05-15
-ignore_index: -1
 pad_value: 0
 padding_mode: reflect
 
 
+# Weighting
+weights_aerial_satellite:
+                         building               : [1,1]
+                         pervious surface       : [1,1]
+                         impervious surface     : [1,1]
+                         bare soil              : [1,1]
+                         water                  : [1,1]
+                         coniferous             : [1,1]
+                         deciduous              : [1,1]
+                         brushwood              : [1,1]
+                         vineyard               : [1,1]
+                         herbaceous vegetation  : [1,1]
+                         agricutural land       : [1,1]
+                         plowed land            : [1,1]
+                         other                  : [0,0]
+
+
+
+#Tracking
 enable_progress_bar: True
 progress_rate: 10
