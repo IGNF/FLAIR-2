@@ -10,6 +10,7 @@ def load_data (config: dict, val_percent=0.8):
     - PATH_IMG : aerial image (path, str) 
     - PATH_SP_DATA : satellite image (path, str) 
     - PATH_SP_DATES : satellite product names (path, str) 
+    - PATH_SP_MASKS : satellite clouds / snow masks (path, str)
     - SP_COORDS : centroid coordinate of patch in superpatch (list, e.g., [56,85]) 
     - PATH_MSK : labels (path, str) """ 
     def get_data_paths(path_domains: str, paths_data: dict, matching_dict: dict, test_set: bool) -> dict: 
@@ -19,18 +20,20 @@ def load_data (config: dict, val_percent=0.8):
                 yield path.resolve().as_posix() 
         status = ['train' if test_set == False else 'test'][0] 
         ## data paths dict
-        data = {'PATH_IMG':[], 'PATH_SP_DATA':[], 'SP_COORDS':[], 'PATH_SP_DATES':[], 'PATH_MSK':[]} 
+        data = {'PATH_IMG':[], 'PATH_SP_DATA':[], 'SP_COORDS':[], 'PATH_SP_DATES':[],  'PATH_SP_MASKS':[], 'PATH_MSK':[]} 
         for domain in path_domains: 
             for area in os.listdir(Path(paths_data['path_aerial_'+status], domain)): 
                 aerial = sorted(list(list_items(Path(paths_data['path_aerial_'+status])/domain/Path(area), 'IMG*.tif')), key=lambda x: int(x.split('_')[-1][:-4])) 
                 sen2sp = sorted(list(list_items(Path(paths_data['path_sen_'+status])/domain/Path(area), '*data.npy'))) 
-                sprods = sorted(list(list_items(Path(paths_data['path_sen_'+status])/domain/Path(area), '*products.txt'))) 
+                sprods = sorted(list(list_items(Path(paths_data['path_sen_'+status])/domain/Path(area), '*products.txt')))
+                smasks = sorted(list(list_items(Path(paths_data['path_sen_'+status])/domain/Path(area), '*masks.npy')))
                 coords = [] 
                 for k in aerial: 
                     coords.append(matching_dict[k.split('/')[-1]]) 
                 data['PATH_IMG'] += aerial 
                 data['PATH_SP_DATA'] += sen2sp*len(aerial) 
-                data['PATH_SP_DATES'] += sprods*len(aerial) 
+                data['PATH_SP_DATES'] += sprods*len(aerial)
+                data['PATH_SP_MASKS'] += smasks*len(aerial) 
                 data['SP_COORDS'] += coords 
                 if test_set == False: 
                     data['PATH_MSK'] += sorted(list(list_items(Path(paths_data['path_labels_'+status])/domain/Path(area), 'MSK*.tif')), key=lambda x: int(x.split('_')[-1][:-4])) 

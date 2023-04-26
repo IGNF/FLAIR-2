@@ -13,13 +13,11 @@ from rich.tree import Tree
 from pytorch_lightning.utilities.distributed import rank_zero_only 
 
 
-
-
 def read_config(file_path):
     with open(file_path, "r") as f:
         return yaml.safe_load(f)
 
-    
+   
 @rank_zero_only
 def print_metrics(miou, ious):
     classes = ['building','pervious surface','impervious surface','bare soil','water','coniferous','deciduous',
@@ -39,7 +37,6 @@ def pad_tensor(x, l, pad_value=0):
     padlen = l - x.shape[0]
     pad = [0 for _ in range(2 * len(x.shape[1:]))] + [0, padlen]
     return F.pad(x, pad=pad, value=pad_value)
-
 
 
 def pad_collate_train(dict, pad_value=0):

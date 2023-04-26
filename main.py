@@ -46,12 +46,8 @@ def main(config):
         dict_train=d_train,
         dict_val=d_val,
         dict_test=d_test,
-        batch_size=config["batch_size"],
-        num_workers=config["num_workers"],
-        drop_last=True,
-        pix_buff=config['sat_patch_size'],
-        num_classes=config["num_classes"],
-        num_channels=config['num_channels_aerial']
+        config=config,
+        drop_last=True        
     )
 
     model = TimeTexture_flair(config)

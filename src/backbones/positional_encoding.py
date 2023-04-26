@@ -9,7 +9,7 @@ class PositionalEncoder(nn.Module):
         self.T = T
         self.repeat = repeat
         self.denom = torch.pow(
-            T, 2 * (torch.arange(offset, offset + d).float() // 2) / d
+            T, 2 * torch.div(torch.arange(offset, offset + d).float(), 2, rounding_mode='floor') / d
         )
         self.updated_location = False
 

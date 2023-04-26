@@ -21,23 +21,28 @@ data:
     path_metadata_aerial: "./flair-1_metadata_aerial.json" 
 
 
-out_folder: "/gpfsscratch/rech/tel/ubo93ds/flair_nb2_tests/"
-out_model_name: "flair2lib_test_summarize_40_nowei_2loss_15and05"
+out_folder: "/gpfsscratch/rech/tel/uds14cv/FLAIR2-RESULTS/testFullModel"
+out_model_name: "flair2lib_test_filtercloud0560_monodate"
 
 # SLURM
 py_script: ./FLAIR2LIB-LAST/main.py
-job_name: "tt_summarize_40_nowei_2loss_15and05" 
+job_name: "flair2lib_test_filtercloud0560_monodate" 
 output_job: "./jobs/" 
 error_job: "./jobs/"
+
+# Data manipulation
+filter_clouds: True
+mono_date: True
+average_month: False
 
 # Inputs
 num_classes: 13
 num_channels_aerial: 5 # fixed to 5 in dataloader
 num_channels_sat: 10 # fixed to 10 in dataloader
 
-#Fusion
+# Fusion
 fusion: full  # summarize= featmap spatial dim squeezed; full= entire super-area featmap; cropped= featmap super-area cropped to aerial area
-sat_patch_size: 40 # > 8 & 112 & multiples of 8 : 16,24,32,40,48,56,64,72,80,88,96,104,112...
+sat_patch_size: 40 # > 8 & < 112 & multiples of 8 : 16,24,32,40,48,56,64,72,80,88,96,104,112...
  
 
 # Training
