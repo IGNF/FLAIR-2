@@ -64,7 +64,7 @@ class SegmentationTask(pl.LightningModule):
 
         loss_unet = self.criterion[0](logits_unet, targets)
         loss_utae = self.criterion[1](logits_utae, targets_sp)       
-        loss = loss_utae*0.5 + loss_unet*1.5
+        loss = loss_utae*1 + loss_unet*1
    
         with torch.no_grad():
             preds = logits_unet.argmax(dim=1)
