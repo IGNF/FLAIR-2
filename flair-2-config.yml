@@ -22,35 +22,49 @@ data:
 
 
 out_folder: "/gpfsscratch/rech/tel/uds14cv/FLAIR2-RESULTS/testFullModel"
-out_model_name: "flair2lib_test_filtercloud0560_monodate"
+out_model_name: "flair2lib_test_filtercloud0560_loss1-1"
 
-# SLURM
-py_script: ./FLAIR2LIB-LAST/main.py
-job_name: "flair2lib_test_filtercloud0560_monodate" 
-output_job: "./jobs/" 
-error_job: "./jobs/"
+#Fusion
+fusion: summarize  # summarize= featmap spatial dim squeezed; full= entire super-area featmap; cropped= featmap super-area cropped to aerial area
+sat_patch_size: 40 # > 8 & 112 & multiples of 8 : 16,24,32,40,48,56,64,72,80,88,96,104,112...
+w_unet_utae: [1,1]
+drop_utae_modality: 0.0 # 0 == always add utae ; 1 == always drop utae
+mlp_type: deep # 'deep' or shallow --> if summarize only
+aggreg_type: mean # max or mean to splash spatial dim
+reshape_labels: False # yes or no --> of no, conv on output of utae to 512
 
-# Data manipulation
+# Sentinel Time Series filtering
 filter_clouds: True
-mono_date: True
+mono_date: False
 average_month: False
+
+# Weighting
+weights_aerial_satellite:
+                         building               : [1,1]
+                         pervious surface       : [1,1]
+                         impervious surface     : [1,1]
+                         bare soil              : [1,1]
+                         water                  : [1,1]
+                         coniferous             : [1,1]
+                         deciduous              : [1,1]
+                         brushwood              : [1,1]
+                         vineyard               : [1,1]
+                         herbaceous vegetation  : [1,1]
+                         agricutural land       : [1,1]
+                         plowed land            : [1,1]
+                         other                  : [0,0]
 
 # Inputs
 num_classes: 13
 num_channels_aerial: 5 # fixed to 5 in dataloader
 num_channels_sat: 10 # fixed to 10 in dataloader
 
-# Fusion
-fusion: full  # summarize= featmap spatial dim squeezed; full= entire super-area featmap; cropped= featmap super-area cropped to aerial area
-sat_patch_size: 40 # > 8 & < 112 & multiples of 8 : 16,24,32,40,48,56,64,72,80,88,96,104,112...
- 
-
 # Training
 num_epochs: 100
 batch_size: 5
 lr: 0.001
 
-# Computational
+# Computation
 num_workers: 10
 accelerator: gpu
 gpus_per_node: 4
@@ -74,25 +88,6 @@ ref_year: 2021
 ref_date: 05-15
 pad_value: 0
 padding_mode: reflect
-
-
-# Weighting
-weights_aerial_satellite:
-                         building               : [1,1]
-                         pervious surface       : [1,1]
-                         impervious surface     : [1,1]
-                         bare soil              : [1,1]
-                         water                  : [1,1]
-                         coniferous             : [1,1]
-                         deciduous              : [1,1]
-                         brushwood              : [1,1]
-                         vineyard               : [1,1]
-                         herbaceous vegetation  : [1,1]
-                         agricutural land       : [1,1]
-                         plowed land            : [1,1]
-                         other                  : [0,0]
-
-
 
 #Tracking
 enable_progress_bar: True

@@ -1,6 +1,14 @@
 import numpy as np
-import datetime
-import pandas as pd
+import yaml
+
+import torch
+import torch
+from torch.nn import functional as F
+
+
+def read_config(file_path):
+    with open(file_path, "r") as f:
+        return yaml.safe_load(f)
 
 def filter_dates(mask, clouds:bool=2, area_threshold:float=0.5, proba_threshold:int=60):
     """ Mask : array T*2*H*W
@@ -22,3 +30,69 @@ def filter_dates(mask, clouds:bool=2, area_threshold:float=0.5, proba_threshold:
             dates_to_keep.append(t)
 
     return dates_to_keep
+
+
+def pad_tensor(x, l, pad_value=0):
+    padlen = l - x.shape[0]
+    pad = [0 for _ in range(2 * len(x.shape[1:]))] + [0, padlen]
+    return F.pad(x, pad=pad, value=pad_value)
+
+
+
+def pad_collate_train(dict, pad_value=0):
+       
+    _imgs   = [i['patch'] for i in dict]    
+    _sen    = [i['spatch'] for i in dict] 
+    _dates  = [i['dates'] for i in dict]
+    _msks   = [i['msk'] for i in dict] 
+    _smsks  = [i['smsk'] for i in dict]
+
+    sizes = [e.shape[0] for e in _sen]
+    m = max(sizes)
+    padded_data, padded_dates = [],[]
+    if not all(s == m for s in sizes):
+        for data, date in zip(_sen, _dates):
+            padded_data.append(pad_tensor(data, m, pad_value=pad_value))
+            padded_dates.append(pad_tensor(date, m, pad_value=pad_value))
+    else:
+        padded_data = _sen
+        padded_dates = _dates
+          
+    batch = {
+             "patch": torch.stack(_imgs, dim=0),
+             "spatch": torch.stack(padded_data, dim=0),
+             "dates": torch.stack(padded_dates, dim=0),
+             "msk": torch.stack(_msks, dim=0),
+             "smsk": torch.stack(_smsks, dim=0)
+        
+            }  
+    return batch
+
+
+
+def pad_collate_predict(dict, pad_value=0):
+    
+    _imgs   = [i['patch'] for i in dict]
+    _sen    = [i['spatch'] for i in dict] 
+    _dates  = [i['dates'] for i in dict]
+    _ids   = [i['id'] for i in dict] 
+
+
+    sizes = [e.shape[0] for e in _sen]
+    m = max(sizes)
+    padded_data, padded_dates = [],[]
+    if not all(s == m for s in sizes):
+        for data, date in zip(_sen, _dates):
+            padded_data.append(pad_tensor(data, m, pad_value=pad_value))
+            padded_dates.append(pad_tensor(date, m, pad_value=pad_value))
+    else:
+        padded_data = _sen
+        padded_dates = _dates
+          
+    batch = {
+             "patch": torch.stack(_imgs, dim=0),
+             "spatch": torch.stack(padded_data, dim=0),
+             "dates": torch.stack(padded_dates, dim=0),
+             "id": _ids,
+            }  
+    return batch
