@@ -1,15 +1,10 @@
 import argparse
-import json
 import os
-import pickle as pkl
-import pprint
-import time
 from pathlib import Path 
 
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.utils.data as data
 
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
@@ -17,12 +12,11 @@ from pytorch_lightning.callbacks.progress.tqdm_progress import TQDMProgressBar
 from pytorch_lightning import Trainer, seed_everything
 from pytorch_lightning.utilities.distributed import rank_zero_only 
 
-
-from src.backbones import utae_model
 from src.backbones.txt_model import TimeTexture_flair
 from src.datamodule import DataModule
 from src.task_module import SegmentationTask
-from src.utils import *
+from src.utils_prints import print_config, print_metrics
+from src.utils_dataset import read_config
 from src.load_data import load_data
 from src.prediction_writer import PredictionWriter
 from src.metrics import generate_miou
@@ -42,7 +36,6 @@ def main(config):
 
     # Dataset definition
     data_module = DataModule(
-        # folder=config.path_data,
         dict_train=d_train,
         dict_val=d_val,
         dict_test=d_test,

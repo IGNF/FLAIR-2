@@ -1,7 +1,7 @@
 from torch.utils.data import DataLoader
 from pytorch_lightning import LightningDataModule
 from .dataset import Fit_Dataset, Predict_Dataset
-from .utils import *
+from .utils_dataset import *
 
 class DataModule(LightningDataModule):
     def __init__(

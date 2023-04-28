@@ -22,7 +22,7 @@ data:
 
 
 out_folder: "/gpfsscratch/rech/tel/uds14cv/FLAIR2-RESULTS/testFullModel"
-out_model_name: "flair2lib_test_filtercloud0560_loss1-1"
+out_model_name: "flair2lib_test_last"
 
 #Fusion
 fusion: summarize  # summarize= featmap spatial dim squeezed; full= entire super-area featmap; cropped= featmap super-area cropped to aerial area

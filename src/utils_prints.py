@@ -1,18 +1,8 @@
-import yaml
-import torch
-import torch
-from torch.nn import functional as F
-
 from omegaconf import DictConfig, ListConfig
 from rich import get_console
 from rich.style import Style
 from rich.tree import Tree
-
-
-def read_config(file_path):
-    with open(file_path, "r") as f:
-        return yaml.safe_load(f)
-
+from pytorch_lightning.utilities.distributed import rank_zero_only 
 
 def print_recap(config, dict_train, dict_val, dict_test):
     print('\n+'+'='*80+'+',f"{'Model name: '+config.out_model_name : ^80}", '+'+'='*80+'+', f"{'[---TASKING---]'}", sep='\n')
@@ -23,7 +13,7 @@ def print_recap(config, dict_train, dict_val, dict_test):
     for info, val in zip(["batch size", "learning rate", "epochs", "nodes", "GPU per nodes", "accelerator", "workers"], [config.batch_size, config.learning_rate, config.num_epochs, config.num_nodes, config.gpus_per_node, config.accelerator, config.num_workers]): print(f"- {info:25s}: {'':3s}{val}")        
     print('\n+'+'-'*80+'+', '\n')
     
-
+@rank_zero_only
 def print_metrics(miou, ious):
     classes = ['building','pervious surface','impervious surface','bare soil','water','coniferous','deciduous',
                'brushwood','vineyard','herbaceous vegetation','agricultural land','plowed land']
@@ -37,7 +27,7 @@ def print_metrics(miou, ious):
         print ("{:<25} {:<15}".format(k, round(v, 5)))
     print('\n\n')    
 
-
+@rank_zero_only
 def print_config(config: DictConfig) -> None:
     """Print content of given config using Rich library and its tree structure.
     Args: config: Config to print to console using a Rich tree.

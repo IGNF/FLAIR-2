@@ -1,6 +1,5 @@
 from pathlib import Path
 from PIL import Image
-import numpy as np
 
 from pytorch_lightning.callbacks import BasePredictionWriter
 
