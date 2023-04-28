@@ -24,14 +24,22 @@ data:
 out_folder: "/gpfsscratch/rech/tel/uds14cv/FLAIR2-RESULTS/testFullModel"
 out_model_name: "flair2lib_test_last"
 
+print_model: False
+
 #Fusion
-fusion: summarize  # summarize= featmap spatial dim squeezed; full= entire super-area featmap; cropped= featmap super-area cropped to aerial area
+fusion: summarize  # summarize, cropped, full
 sat_patch_size: 40 # > 8 & 112 & multiples of 8 : 16,24,32,40,48,56,64,72,80,88,96,104,112...
 w_unet_utae: [1,1]
 drop_utae_modality: 0.0 # 0 == always add utae ; 1 == always drop utae
 mlp_type: deep # 'deep' or shallow --> if summarize only
 aggreg_type: mean # max or mean to splash spatial dim
-reshape_labels: False # yes or no --> of no, conv on output of utae to 512
+
+reshape_labels: False # yes or no --> if no, conv on output of utae to 512
+
+# MTD and aug
+aerial_metadata: True
+geo_enc_size: 32
+
 
 # Sentinel Time Series filtering
 filter_clouds: True
@@ -60,16 +68,16 @@ num_channels_aerial: 5 # fixed to 5 in dataloader
 num_channels_sat: 10 # fixed to 10 in dataloader
 
 # Training
-num_epochs: 100
+num_epochs: 2
 batch_size: 5
 lr: 0.001
 
 # Computation
-num_workers: 10
+num_workers: 0
 accelerator: gpu
-gpus_per_node: 4
-num_nodes: 3
-strategy: ddp
+gpus_per_node: 1
+num_nodes: 1
+strategy: null
 
 
 # UTAE Model
