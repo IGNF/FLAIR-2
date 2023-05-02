@@ -1,4 +1,7 @@
-# FLAIR-2-ChallengeIA
+# Challenge FLAIR #2: time and texture for semantic segmentation from multi-source optical imagery
+
+TODO - -
+<!---
  **Baseline du deuxième challenge IA de l'IGN, FLAIR #2 - Multimodalité Sentinel 2 / Ortho**
 
  Le but de ce challenge est d'utiliser plusieurs types d'image satellites en entrée pour tirer le meilleur de chacun. On utilise des piles temporelles d'images Sentinel 2 et les images ortho. 
@@ -13,3 +16,4 @@
   alt="architecture de l'utae">
   <figcaption>Architecture de l'U-TAE</figcaption>
 </figure>
+-->
