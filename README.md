@@ -1,4 +1,4 @@
-#Challenge FLAIR #2: textural and temporal information for semantic segmentation from multi-source optical imagery
+# Challenge FLAIR #2: textural and temporal information for semantic segmentation from multi-source optical imagery
 
 TODO - -
 <!---
