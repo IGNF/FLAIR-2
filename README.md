@@ -30,7 +30,7 @@ The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion a
 <br>
 
 <p align="center">
-  <img width="70%" src="images/flair-2-spatial.png">
+  <img width="50%" src="images/flair-2-spatial.png">
   <br>
   <em>Spatial definitions of the FLAIR #2 dataset.</em>
 </p>
@@ -48,7 +48,37 @@ The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion a
 A two-branches architecture integrating a U-Net with a pre-trained ResNet34 encoder and a U-TAE encompassing a temporal self-attention encoder is presented. The U-TAE branch aims at learning spatio-temporal embeddings from the high resolution satellite time series that are further integrated into the U-Net branch exploiting the aerial imagery. The proposed _U-T&T_ model features a fusion module to exploit and shape the U-TAE embeddings towards the U-Net branch.   
 
 <p align="center">
-  <img width="70%" src="images/flair-2-network.png">
+  <img width="100%" src="images/flair-2-network.png">
   <br>
-  <em>Example of input data (first three columns are from aerial imagery, fourth from Sentinel-2) and corresponding supervision masks (last column).</em>
+  <em>Overview of the proposed architecture.</em>
 </p>
+
+
+
+## Usage 
+
+The `flair-2-config.yml` file controls paths, hyperparameters and computing ressources. The file `requirement.txt` is listing used libraries for the baselines.
+
+To launch a training/inference/metrics computation, you can either use : 
+
+- ```
+  main.py --config_file=flair-2-config.yml
+  ```
+
+-  use the `flair-two-baseline.ipynb` notebook guiding you through data visualization, training and testing steps.
+
+A toy dataset (reduced size) is available to check that your installation and the information in the configuration file are correct.
+
+<br>
+
+
+## Reference
+Please include a citation to the following article if you use the FLAIR #1 dataset:
+
+```
+@article()
+```
+
+## Acknowledgment
+This work was performed using HPC/AI resources from GENCI-IDRIS (Grant 2022-A0131013803). This work was supported by the project "Copernicus / FPCUP” of the European Union, by the French Space Agency (CNES) and by Connect by CNES.
+
