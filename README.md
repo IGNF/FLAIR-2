@@ -45,7 +45,7 @@ The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion a
 <br><br>
 ## Baseline model 
 
-[![Generic badge](https://img.shields.io/badge/LINK-U-TAE REPO-#5aae2a.svg)](https://shields.io/)
+<a href="https://postgresql.org"><img src="https://img.shields.io/badge/Powered%20by-PostgreSQL-blue.svg"/></a>
 
 <a href="https://github.com/VSainteuf/utae-paps"><img src="https://img.shields.io/badge/Link%20to-U-TAE-blue.svg"/></a>
 
