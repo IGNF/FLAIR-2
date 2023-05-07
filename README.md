@@ -1,19 +1,48 @@
 # Challenge FLAIR #2: textural and temporal information for semantic segmentation from multi-source optical imagery
 
-TODO - -
-<!---
- **Baseline du deuxième challenge IA de l'IGN, FLAIR #2 - Multimodalité Sentinel 2 / Ortho**
 
- Le but de ce challenge est d'utiliser plusieurs types d'image satellites en entrée pour tirer le meilleur de chacun. On utilise des piles temporelles d'images Sentinel 2 et les images ortho. 
+Participate in obtaining more accurate maps for a more comprehensive description and a better understanding of our environment! Come push the limits of state-of-the-art semantic segmentation approaches on a large and challenging dataset. Get in touch at ai-challenge@ign.fr
 
- ## U-TAE
 
- L'architecture utilisée ici a été développée par Vivien Sainte Fare Garnot. Appelée U-TAE, pour U-Net with Temporal Attention Encoder (https://arxiv.org/pdf/2107.07933.pdf), elle a initialement été utilisée pour la segmentation de parcelles agricoles à partir de piles temporelles Sentinel 2. Ici nous l'utilisons pour la segmentation sémantique à grande échelle. Le code original est disponible ici : https://github.com/VSainteuf/utae-paps. 
+![Alt bandeau FLAIR-IGN](images/flair_bandeau.jpg?raw=true)
 
- <figure style="text-align:center">
-  <img
-  src="images/utae.png"
-  alt="architecture de l'utae">
-  <figcaption>Architecture de l'U-TAE</figcaption>
-</figure>
--->
+<div style="border-width:1px; border-style:solid; border-color:#d2db8c; padding-left: 1em; padding-right: 1em; ">
+  
+<h2 style="margin-top:5px;">Links</h2>
+
+
+- **Datapaper :** 
+
+- **Dataset links :** https://ignf.github.io/FLAIR/ [🛑 will made available after the FLAIR #2 challenge !]
+
+- **Challenge page :** 
+
+</div>
+
+
+
+
+
+
+## Context & Data
+
+The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion annotated pixels, acquired over three years and different months (spatio-temporal domains). It consists of very high resolution aerial imagery patches with 5 channels (RVB-Near Infrared-Elevation) and annotation (19 semantic classes or 13 for the baselines). High resolution Sentinel-2 1-year time series with 10 spectral band are also provided on the same areas with broader extents.
+
+<br>
+
+<p align="center">
+  <img width="70%" src="images/flair-2_patches.png">
+  <br>
+  <em>Example of input data (first three columns are from aerial imagery, fourth from Sentinel-2) and corresponding supervision masks (last column).</em>
+</p>
+
+
+## Baseline model 
+
+A two-branches architecture integrating a U-Net with a pre-trained ResNet34 encoder and a U-TAE encompassing a temporal self-attention encoder is presented. The U-TAE branch aims at learning spatio-temporal embeddings from the high resolution satellite time series that are further integrated into the U-Net branch exploiting the aerial imagery. The proposed _U-T&T_ model features a fusion module to exploit and shape the U-TAE embeddings towards the U-Net branch.   
+
+<p align="center">
+  <img width="70%" src="images/flair-2_network.png">
+  <br>
+  <em>Example of input data (first three columns are from aerial imagery, fourth from Sentinel-2) and corresponding supervision masks (last column).</em>
+</p>
