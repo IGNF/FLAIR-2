@@ -47,7 +47,7 @@ The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion a
 
 
 <a href="https://github.com/VSainteuf/utae-paps"><img src="https://img.shields.io/badge/Link%20to-U--TAE-blue.svg"/></a>
-<a href="https://github.com/qubvel/segmentation_models.pytorch"><img src="https://img.shields.io/badge/Link%20to-SMP-#f4dbaa.svg"/></a>
+<a href="https://github.com/qubvel/segmentation_models.pytorch"><img src="https://img.shields.io/badge/Link%20to-SMP-f4dbaa.svg"/></a>
 
 
 
