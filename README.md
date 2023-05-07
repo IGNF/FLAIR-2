@@ -42,7 +42,7 @@ The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion a
   <em>Example of input data (first three columns are from aerial imagery, fourth from Sentinel-2) and corresponding supervision masks (last column).</em>
 </p>
 
-
+<br><br>
 ## Baseline model 
 
 A two-branches architecture integrating a U-Net with a pre-trained ResNet34 encoder and a U-TAE encompassing a temporal self-attention encoder is presented. The U-TAE branch aims at learning spatio-temporal embeddings from the high resolution satellite time series that are further integrated into the U-Net branch exploiting the aerial imagery. The proposed _U-T&T_ model features a fusion module to exploit and shape the U-TAE embeddings towards the U-Net branch.   
@@ -53,7 +53,7 @@ A two-branches architecture integrating a U-Net with a pre-trained ResNet34 enco
   <em>Overview of the proposed architecture.</em>
 </p>
 
-
+<br><br>
 
 ## Usage 
 
@@ -69,8 +69,8 @@ To launch a training/inference/metrics computation, you can either use :
 
 A toy dataset (reduced size) is available to check that your installation and the information in the configuration file are correct.
 
-<br>
 
+<br><br>
 
 ## Reference
 Please include a citation to the following article if you use the FLAIR #1 dataset:
