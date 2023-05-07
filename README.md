@@ -73,7 +73,7 @@ A toy dataset (reduced size) is available to check that your installation and th
 <br><br>
 
 ## Reference
-Please include a citation to the following article if you use the FLAIR #1 dataset:
+Please include a citation to the following article if you use the FLAIR #2 dataset:
 
 ```
 @article()
