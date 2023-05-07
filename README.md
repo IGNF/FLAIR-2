@@ -30,7 +30,7 @@ The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion a
 <br>
 
 <p align="center">
-  <img width="25%" src="images/flair-2-spatial.png">
+  <img width="30%" src="images/flair-2-spatial.png">
   <br>
   <em>Spatial definitions of the FLAIR #2 dataset.</em>
 </p>
