@@ -18,7 +18,7 @@ data:
     #path_labels_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_toy_dataset_withmsk/flair_2_toy_labels_test"
 
     path_sp_centroids: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/AUX/flair-2_centroids_sp_to_patch.json" 
-    path_metadata_aerial: "./flair-1_metadata_aerial.json" 
+    path_metadata_aerial: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/AUX/flair_aerial_metadata.json" 
 
 
 out_folder: "/gpfsscratch/rech/tel/uds14cv/FLAIR2-RESULTS/testFullModel"
