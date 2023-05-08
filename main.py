@@ -36,13 +36,22 @@ def main(config):
     
     d_train, d_val, d_test = load_data(config)
 
+    # Augmentation
+    if config["use_augmentation"] == True:
+        transform_set = A.Compose([A.VerticalFlip(p=0.5),
+                                   A.HorizontalFlip(p=0.5),
+                                   A.RandomRotate90(p=0.5)])
+    else:
+        transform_set = None   
+    
     # Dataset definition
     data_module = DataModule(
         dict_train=d_train,
         dict_val=d_val,
         dict_test=d_test,
         config=config,
-        drop_last=True        
+        drop_last=True,
+        use_augmentation = transform_set 
     )
 
     model = TimeTexture_flair(config)
