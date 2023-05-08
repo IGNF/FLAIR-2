@@ -12,6 +12,8 @@ from pytorch_lightning.callbacks.progress.tqdm_progress import TQDMProgressBar
 from pytorch_lightning import Trainer, seed_everything
 from pytorch_lightning.utilities.distributed import rank_zero_only 
 
+import albumentations as A
+
 from src.backbones.txt_model import TimeTexture_flair
 from src.datamodule import DataModule
 from src.task_module import SegmentationTask
@@ -45,15 +47,14 @@ def main(config):
 
     model = TimeTexture_flair(config)
 
-    @rank_zero_only
-    def track_model():
-        print(model)
-    track_model()
+    #@rank_zero_only
+    #def track_model():
+    #    print(model)
+    #track_model()
 
     # Optimizer and Loss
     optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])
 
-    #weights = torch.ones(config["num_classes"]).float()
     with torch.no_grad():
         weights_aer = torch.FloatTensor(np.array(list(config['weights_aerial_satellite'].values()))[:,0])
         weights_sat = torch.FloatTensor(np.array(list(config['weights_aerial_satellite'].values()))[:,1])
@@ -105,7 +106,7 @@ def main(config):
         logger
     ]
 
-    # Train
+    # Train 
     trainer = Trainer(
         accelerator=config["accelerator"],
         devices=config["gpus_per_node"],
@@ -129,7 +130,7 @@ def main(config):
         write_interval = "batch",
     )
 
-    #### instanciation of prediction Trainer
+    # Predict Trainer
     trainer = Trainer(
         accelerator = config["accelerator"],
         devices = config["gpus_per_node"],
@@ -147,7 +148,7 @@ def main(config):
     print_finish()   
     
     
-    ## Compute mIoU over the predictions
+    # Compute mIoU over the predictions
 
     truth_msk = config['data']['path_labels_test']
     pred_msk  = os.path.join(out_dir, "predictions"+"_"+config["out_model_name"])
