@@ -1,0 +1,93 @@
+# data:
+#     path_aerial_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_aerial_train/" #e.g., ./flair_aerial_train 
+#     path_aerial_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_aerial_test/" #e.g., ./flair_2_aerial_test 
+#     path_sen_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_sen_train/" #e.g., ./flair_sen_train 
+#     path_sen_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_sen_test/" #e.g., ./flair_2_sen_test 
+#     path_labels_train: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/flair_labels_train/" #e.g., ./flair_labels_train 
+#     path_labels_test: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/test-2/flair_2_labels_test/" #e.g., ./flair_2_labels_test 
+#     path_sp_centroids: "/gpfsscratch/rech/tel/commun/FLAIR-DATA/AUX/flair-2_centroids_sp_to_patch.json" 
+#     path_metadata_aerial: "./flair-1_metadata_aerial.json" #e.g., ./flair-1_metadata_aerial.json
+
+data:
+    path_aerial_train: "/home/MValette/Documents/Challenge_FLAIR2/dataFLAIR2/flair-2_toy_dataset/flair_2_toy_dataset_withmsk/flair_2_toy_aerial_train/" #e.g., ./flair_aerial_train 
+    path_aerial_test: "/home/MValette/Documents/Challenge_FLAIR2/dataFLAIR2/flair-2_toy_dataset/flair_2_toy_dataset_withmsk/flair_2_toy_aerial_test/" #e.g., ./flair_2_aerial_test 
+    path_sen_train: "/home/MValette/Documents/Challenge_FLAIR2/dataFLAIR2/flair-2_toy_dataset/flair_2_toy_dataset_withmsk/flair_2_toy_sen_train/" #e.g., ./flair_sen_train 
+    path_sen_test: "/home/MValette/Documents/Challenge_FLAIR2/dataFLAIR2/flair-2_toy_dataset/flair_2_toy_dataset_withmsk/flair_2_toy_sen_test/" #e.g., ./flair_2_sen_test 
+    path_labels_train: "/home/MValette/Documents/Challenge_FLAIR2/dataFLAIR2/flair-2_toy_dataset/flair_2_toy_dataset_withmsk/flair_2_toy_labels_train/" #e.g., ./flair_labels_train 
+    path_labels_test: "/home/MValette/Documents/Challenge_FLAIR2/dataFLAIR2/flair-2_toy_dataset/flair_2_toy_dataset_withmsk/flair_2_toy_labels_test/" #e.g., ./flair_2_labels_test 
+    path_sp_centroids: "/home/MValette/Documents/Challenge_FLAIR2/dataFLAIR2/FLAIR_SEN_SP_centroids.json" 
+    path_metadata_aerial: "./flair-1_metadata_aerial.json" #e.g., ./flair-1_metadata_aerial.json
+
+out_folder: "./outputs"
+out_model_name: "test_notebook"
+
+#Fusion
+fusion: summarize  # summarize= featmap spatial dim squeezed; full= entire super-area featmap; cropped= featmap super-area cropped to aerial area
+sat_patch_size: 40 # > 8 & 112 & multiples of 8 : 16,24,32,40,48,56,64,72,80,88,96,104,112...
+w_unet_utae: [1,1]
+drop_utae_modality: 0.0 # 0 == always add utae ; 1 == always drop utae
+mlp_type: deep # 'deep' or shallow --> if summarize only
+aggreg_type: mean # max or mean to splash spatial dim
+reshape_labels: False # yes or no --> of no, conv on output of utae to 512
+
+# Sentinel Time Series filtering
+filter_clouds: True
+mono_date: False
+average_month: False
+
+# Weighting
+weights_aerial_satellite:
+                         building               : [1,1]
+                         pervious surface       : [1,1]
+                         impervious surface     : [1,1]
+                         bare soil              : [1,1]
+                         water                  : [1,1]
+                         coniferous             : [1,1]
+                         deciduous              : [1,1]
+                         brushwood              : [1,1]
+                         vineyard               : [1,1]
+                         herbaceous vegetation  : [1,1]
+                         agricutural land       : [1,1]
+                         plowed land            : [1,1]
+                         other                  : [0,0]
+
+# Inputs
+num_classes: 13
+num_channels_aerial: 5 # fixed to 5 in dataloader
+num_channels_sat: 10 # fixed to 10 in dataloader
+
+# Training
+num_epochs: 100
+batch_size: 5
+lr: 0.001
+
+# Computation
+num_workers: 10
+accelerator: gpu
+gpus_per_node: 1
+num_nodes: 1
+strategy: 
+
+
+# UTAE Model
+encoder_widths: [64,64,128,128] # 1st and last must be equivalent to decoder_widths
+decoder_widths: [64,64,128,128] # 1st and last must be equivalent to encoder_widths
+out_conv: [32, 13]
+str_conv_k: 4
+str_conv_s: 2
+str_conv_p: 1
+agg_mode: att_group
+encoder_norm: group
+n_head: 16
+d_model: 256
+d_k: 4
+ref_year: 2021
+ref_date: 05-15
+pad_value: 0
+padding_mode: reflect
+
+#Tracking
+enable_progress_bar: True
+progress_rate: 10
+
+    
