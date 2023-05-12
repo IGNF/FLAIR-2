@@ -297,9 +297,6 @@ def filter_dates(img, mask, clouds:bool=2, area_threshold:float=0.2, proba_thres
             cover /= mask.shape[2]*mask.shape[3]
             if cover < area_threshold:
                 dates_to_keep.append(t)
-        else :
-            print(c, img[t, :, :].shape[0]*img[t, :, :].shape[1])
-
     return dates_to_keep
 
 def read_dates(txt_file: str) -> np.array:
