@@ -69,6 +69,32 @@ To launch a training/inference/metrics computation, you can either use :
 
 A toy dataset (reduced size) is available to check that your installation and the information in the configuration file are correct.
 
+<br><br>
+
+## Leaderboard
+
+Please note that for participants to the FLAIR #2 challenge on CodaLab, a certain number of constraints must be satisfied (in particular, inference time). All infos are available on the _Overview_ page of the competion.
+
+| Model      |  Input   |mIoU 
+------------ | ------------- 
+| baseline U-Net (ResNet34) | aerial imagery | 0.5467±0.0009
+| baseline U-Net (ResNet34) + _metadata + augmentation_ | aerial imagery | 0.5517±0.0013
+|||
+| baseline U-T&T | aerial and satellite imagery | 0.5490±0.0072
+| baseline U-T&T + _filter clouds + monthly averages_ | aerial and satellite imagery | 0.5580±0.0096
+
+If you want to submit a new entry, you can open a new issue.
+<b> Results of the challenge will be reported soon! </b>
+
+The baseline U-T&T + _filter clouds + monthly averages_ obtains the following confusion matrix: 
+
+<!---
+<p align="center">
+  <img width="50%" src="images/flair-1_heatmap.png">
+  <br>
+  <em>Baseline confusion matrix of the test dataset normalized by rows.</em>
+</p>
+-->
 
 <br><br>
 
