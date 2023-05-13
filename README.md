@@ -26,7 +26,7 @@ Participate in obtaining more accurate maps for a more comprehensive description
 
 ## Context & Data
 
-The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion annotated pixels, acquired over three years and different months (spatio-temporal domains). It consists of very high resolution aerial imagery patches with 5 channels (RVB-Near Infrared-Elevation) and annotation (19 semantic classes or 13 for the baselines). High resolution Sentinel-2 1-year time series with 10 spectral band are also provided on the same areas with broader extents.
+The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion annotated pixels, acquired over three years and different months (spatio-temporal domains). It consists of very high resolution aerial imagery patches with 5 channels (RVB-Near Infrared-Elevation) and annotation (19 semantic classes or 13 for the baselines). High resolution Sentinel-2 1-year time series with 10 spectral band are also provided on the same locations with broader extents. More than 50,000 Sentinel-2 acquisitions are available.
 <br>
 
 <p align="center">
