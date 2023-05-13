@@ -75,8 +75,8 @@ A toy dataset (reduced size) is available to check that your installation and th
 
 Please note that for participants to the FLAIR #2 challenge on CodaLab, a certain number of constraints must be satisfied (in particular, inference time). All infos are available on the _Overview_ page of the competion.
 
-| Model      |  Input   |mIoU 
------------- | ------------- 
+| Model|Input|mIoU 
+------------ | ------------- | -------------
 | baseline U-Net (ResNet34) | aerial imagery | 0.5467±0.0009
 | baseline U-Net (ResNet34) + _metadata + augmentation_ | aerial imagery | 0.5517±0.0013
 |||
