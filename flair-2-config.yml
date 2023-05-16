@@ -31,12 +31,12 @@ w_unet_utae: [1,1]
 drop_utae_modality: 0.0 # 0 == always add utae ; 1 == always drop utae
 
 # MTD and AUG
-aerial_metadata: True
+aerial_metadata: False
 geo_enc_size: 32
 use_augmentation: False
 
 # Sentinel Time Series filtering
-filter_clouds: True
+filter_clouds: False
 average_month: False
 
 # Weighting
@@ -52,7 +52,7 @@ weights_aerial_satellite:
                          vineyard               : [1,1]
                          herbaceous vegetation  : [1,1]
                          agricutural land       : [1,1]
-                         plowed land            : [1,1]
+                         plowed land            : [1,0]
                          other                  : [0,0]
 
 # Inputs
@@ -61,12 +61,12 @@ num_channels_aerial: 5 # fixed to 5 in dataloader
 num_channels_sat: 10 # fixed to 10 in dataloader
 
 # Training
-num_epochs: 2
-batch_size: 5
+num_epochs: 100
+batch_size: 110
 lr: 0.001
 
 # Computation
-num_workers: 0
+num_workers: 10
 accelerator: gpu
 gpus_per_node: 1
 num_nodes: 1

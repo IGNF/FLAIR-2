@@ -26,7 +26,7 @@ Participate in obtaining more accurate maps for a more comprehensive description
 
 ## Context & Data
 
-The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion annotated pixels, acquired over three years and different months (spatio-temporal domains). It consists of very high resolution aerial imagery patches with 5 channels (RVB-Near Infrared-Elevation) and annotation (19 semantic classes or 13 for the baselines). High resolution Sentinel-2 1-year time series with 10 spectral band are also provided on the same areas with broader extents.
+The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion annotated pixels of very high resolution aerial imagery at 0.2 m spatial resolution, acquired over three years and different months (spatio-temporal domains). Aerial imagery patches consist of 5 channels (RVB-Near Infrared-Elevation) and have corresponding annotation (with 19 semantic classes or 13 for the baselines). Furthermore, to integrate broader spatial context and temporal information, high resolution Sentinel-2 1-year time series with 10 spectral band are also provided. More than 50,000 Sentinel-2 acquisitions with 10 m spatial resolution are available.
 <br>
 
 <p align="center">
@@ -45,12 +45,12 @@ The FLAIR #2 dataset is sampled countrywide and is composed of over 20 billion a
 <br><br>
 ## Baseline model 
 
-A two-branches architecture integrating a U-Net <a href="https://github.com/qubvel/segmentation_models.pytorch"><img src="https://img.shields.io/badge/Link%20to-SMP-f4dbaa.svg"/></a> with a pre-trained ResNet34 encoder and a U-TAE <a href="https://github.com/VSainteuf/utae-paps"><img src="https://img.shields.io/badge/Link%20to-U--TAE-f4dbaa.svg"/></a> encompassing a temporal self-attention encoder is presented. The U-TAE branch aims at learning spatio-temporal embeddings from the high resolution satellite time series that are further integrated into the U-Net branch exploiting the aerial imagery. The proposed _U-T&T_ model features a fusion module to exploit and shape the U-TAE embeddings towards the U-Net branch.   
+A two-branch architecture integrating a U-Net <a href="https://github.com/qubvel/segmentation_models.pytorch"><img src="https://img.shields.io/badge/Link%20to-SMP-f4dbaa.svg"/></a> with a pre-trained ResNet34 encoder and a U-TAE <a href="https://github.com/VSainteuf/utae-paps"><img src="https://img.shields.io/badge/Link%20to-U--TAE-f4dbaa.svg"/></a> encompassing a temporal self-attention encoder is presented. The U-TAE branch aims at learning spatio-temporal embeddings from the high resolution satellite time series that are further integrated into the U-Net branch exploiting the aerial imagery. The proposed _U-T&T_ model features a fusion module to extend and reshape the U-TAE embeddings in order to add them towards the U-Net branch.   
 
 <p align="center">
   <img width="100%" src="images/flair-2-network.png">
   <br>
-  <em>Overview of the proposed architecture.</em>
+  <em>Overview of the proposed two-branch architecture.</em>
 </p>
 
 <br><br>
@@ -65,10 +65,36 @@ To launch a training/inference/metrics computation, you can either use :
   main.py --config_file=flair-2-config.yml
   ```
 
--  use the `flair-two-baseline.ipynb` notebook guiding you through data visualization, training and testing steps.
+-  use the `./visualisation/flair-two-visualisation-and-baseline.ipynb` notebook guiding you through data visualization, training and testing steps.
 
 A toy dataset (reduced size) is available to check that your installation and the information in the configuration file are correct.
 
+<br><br>
+
+## Leaderboard
+
+Please note that for participants to the FLAIR #2 challenge on CodaLab, a certain number of constraints must be satisfied (in particular, inference time). All infos are available on the _Overview_ page of the competion.
+
+| Model|Input|mIoU 
+------------ | ------------- | -------------
+| baseline U-Net (ResNet34) | aerial imagery | 0.5467±0.0009
+| baseline U-Net (ResNet34) + _metadata + augmentation_ | aerial imagery | 0.5517±0.0013
+|||
+| baseline U-T&T | aerial and satellite imagery | 0.5490±0.0072
+| baseline U-T&T + _filter clouds + monthly averages_ | aerial and satellite imagery | 0.5580±0.0096
+
+If you want to submit a new entry, you can open a new issue.
+<b> Results of the challenge will be reported soon! </b>
+
+The baseline U-T&T + _filter clouds + monthly averages_ obtains the following confusion matrix: 
+
+<!---
+<p align="center">
+  <img width="50%" src="images/flair-1_heatmap.png">
+  <br>
+  <em>Baseline confusion matrix of the test dataset normalized by rows.</em>
+</p>
+-->
 
 <br><br>
 
