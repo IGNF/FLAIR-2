@@ -131,38 +131,42 @@ def main(config):
     trainer.fit(seg_module, datamodule=data_module)
     
     trainer.validate(seg_module, datamodule=data_module) 
-    
-    
-    # Predict
-    writer_callback = PredictionWriter(        
-        output_dir = os.path.join(out_dir, "predictions"+"_"+config["out_model_name"]),
-        write_interval = "batch",
-    )
-
-    # Predict Trainer
-    trainer = Trainer(
-        accelerator = config["accelerator"],
-        devices = config["gpus_per_node"],
-        strategy = config["strategy"],
-        num_nodes = config["num_nodes"],
-        callbacks = [writer_callback],
-        enable_progress_bar = config["enable_progress_bar"],
-    )
-
-    trainer.predict(seg_module, datamodule=data_module)
 
     @rank_zero_only
     def print_finish():
         print('--  [FINISHED.]  --', f'output dir : {out_dir}', sep='\n') 
-    print_finish()   
+    print_finish()  
     
+    # Training complete ! The part below is used to make the inference on test data and compute the metrics. As the test labels are not available in the challenge,
+    # it is not useful when training with the full train data. However, you can use it for your experiments if you created a custom test dataset. 
     
-    # Compute mIoU over the predictions
+    # # Predict
+    # writer_callback = PredictionWriter(        
+    #     output_dir = os.path.join(out_dir, "predictions"+"_"+config["out_model_name"]),
+    #     write_interval = "batch",
+    # )
 
-    truth_msk = config['data']['path_labels_test']
-    pred_msk  = os.path.join(out_dir, "predictions"+"_"+config["out_model_name"])
-    mIou, ious = generate_miou(truth_msk, pred_msk)
-    print_metrics(mIou, ious)      
+    # # Predict Trainer
+    # trainer = Trainer(
+    #     accelerator = config["accelerator"],
+    #     devices = config["gpus_per_node"],
+    #     strategy = config["strategy"],
+    #     num_nodes = config["num_nodes"],
+    #     callbacks = [writer_callback],
+    #     enable_progress_bar = config["enable_progress_bar"],
+    # )
+
+    # trainer.predict(seg_module, datamodule=data_module)
+    
+    # print_finish()   
+    
+    
+    # # Compute mIoU over the predictions
+
+    # truth_msk = config['data']['path_labels_test']
+    # pred_msk  = os.path.join(out_dir, "predictions"+"_"+config["out_model_name"])
+    # mIou, ious = generate_miou(truth_msk, pred_msk)
+    # print_metrics(mIou, ious)      
     
  
 
