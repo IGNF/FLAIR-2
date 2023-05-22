@@ -78,16 +78,16 @@ Please note that for participants to the FLAIR #2 challenge on CodaLab, a certai
 
 | Model|Input|mIoU 
 ------------ | ------------- | -------------
-| baseline U-Net (ResNet34) | aerial imagery | 0.5467±0.0009
-| baseline U-Net (ResNet34) + _metadata + augmentation_ | aerial imagery | 0.5517±0.0013
+| baseline U-Net (ResNet34) | aerial imagery | 0.5470
+| baseline U-Net (ResNet34) + _metadata + augmentation_ | aerial imagery | 0.5593
 |||
-| baseline U-T&T | aerial and satellite imagery | 0.5490±0.0072
-| baseline U-T&T + _filter clouds + monthly averages + data augmentation_ | aerial and satellite imagery | 0.5623±0.0056
+| baseline U-T&T | aerial and satellite imagery | 0.5594
+| baseline U-T&T + _filter clouds + monthly averages + data augmentation_ | aerial and satellite imagery | 0.5758
 
 If you want to submit a new entry, you can open a new issue.
 <b> Results of the challenge will be reported soon! </b>
 
-The baseline U-T&T + _filter clouds + monthly averages_ obtains the following confusion matrix: 
+The baseline U-T&T + _filter clouds + monthly averages + data_augmentation_ obtains the following confusion matrix: 
 
 <!---
 <p align="center">
