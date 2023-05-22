@@ -82,7 +82,7 @@ Please note that for participants to the FLAIR #2 challenge on CodaLab, a certai
 | baseline U-Net (ResNet34) + _metadata + augmentation_ | aerial imagery | 0.5517±0.0013
 |||
 | baseline U-T&T | aerial and satellite imagery | 0.5490±0.0072
-| baseline U-T&T + _filter clouds + monthly averages_ | aerial and satellite imagery | 0.5580±0.0096
+| baseline U-T&T + _filter clouds + monthly averages + data augmentation_ | aerial and satellite imagery | 0.5623±0.0056
 
 If you want to submit a new entry, you can open a new issue.
 <b> Results of the challenge will be reported soon! </b>
