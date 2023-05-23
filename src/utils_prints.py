@@ -3,6 +3,7 @@ from rich import get_console
 from rich.style import Style
 from rich.tree import Tree
 from pytorch_lightning.utilities.distributed import rank_zero_only 
+from datetime import timedelta
 
 @rank_zero_only
 def print_recap(config, dict_train, dict_val, dict_test):
