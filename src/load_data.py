@@ -49,14 +49,14 @@ def load_data (config: dict, val_percent=0.8):
     paths_data = config['data'] 
     with open(paths_data['path_sp_centroids'], 'r') as file: 
         matching_dict = json.load(file) 
-    path_trainval = Path(paths_data['path_labels_train']) 
+    path_trainval = Path(paths_data['path_aerial_train']) 
     trainval_domains = os.listdir(path_trainval) 
     shuffle(trainval_domains) 
     idx_split = int(len(trainval_domains) * val_percent) 
     train_domains, val_domains = trainval_domains[:idx_split], trainval_domains[idx_split:] 
     dict_train = get_data_paths(config, train_domains, paths_data, matching_dict, test_set=False) 
     dict_val = get_data_paths(config, val_domains, paths_data, matching_dict, test_set=False) 
-    path_test = Path(paths_data['path_labels_test']) 
+    path_test = Path(paths_data['path_aerial_test']) 
     test_domains = os.listdir(path_test) 
     dict_test = get_data_paths(config, test_domains, paths_data, matching_dict, test_set=True) 
     
