@@ -46,9 +46,8 @@ weights_aerial_satellite:
 
 # Inputs
 num_classes: 13
-num_channels_aerial: 5 # fixed to 5 in dataloader
-num_channels_sat: 10 # fixed to 10 in dataloader
-
+num_channels_aerial: 5 
+num_channels_sat: 10 
 # Training
 num_epochs: 100
 batch_size: 10
