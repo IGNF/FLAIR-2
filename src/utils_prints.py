@@ -4,14 +4,28 @@ from rich.style import Style
 from rich.tree import Tree
 from pytorch_lightning.utilities.distributed import rank_zero_only 
 
+@rnak_zero_only
 def print_recap(config, dict_train, dict_val, dict_test):
     print('\n+'+'='*80+'+',f"{'Model name: '+config.out_model_name : ^80}", '+'+'='*80+'+', f"{'[---TASKING---]'}", sep='\n')
-    for info, val in zip(["use weights", "use metadata", "use augmentation"], [config.use_weights, config.use_metadata, config.use_augmentation]): print(f"- {info:25s}: {'':3s}{val}")
+    for info, val in zip(["use metadata", "use augmentation"], [config.use_metadata, config.use_augmentation]): print(f"- {info:25s}: {'':3s}{val}")
     print('\n+'+'-'*80+'+', f"{'[---DATA SPLIT---]'}", sep='\n')
     for split_name, d in zip(["train", "val", "test"], [dict_train, dict_val, dict_test]): print(f"- {split_name:25s}: {'':3s}{len(d['IMG'])} samples")
     print('\n+'+'-'*80+'+', f"{'[---HYPER-PARAMETERS---]'}", sep='\n')
     for info, val in zip(["batch size", "learning rate", "epochs", "nodes", "GPU per nodes", "accelerator", "workers"], [config.batch_size, config.learning_rate, config.num_epochs, config.num_nodes, config.gpus_per_node, config.accelerator, config.num_workers]): print(f"- {info:25s}: {'':3s}{val}")        
     print('\n+'+'-'*80+'+', '\n')
+       
+@rank_zero_only
+def print_inference_time(tt, config): 
+    tt = tt * (config['num_nodes']*config['gpus_per_node'])
+    print('','','#'*80,' '*28+'--- INFERENCE TIME ---', sep='\n')
+    print('- nodes: ', config['num_nodes'])
+    print('- gpus per nodes: ', config['gpus_per_node'])
+    print('[MAX FOR VALID MODEL] : 0:25:00 HH:MM:SS',
+          f'[CURRENT]             : {str(timedelta(seconds=tt))} HH:MM:SS','',sep='\n') 
+    if tt > 1500: print('[X] INFERENCE TOO LONG')
+    else: print('[V] INFERENCE TIME BELOW MAX !', '\n\n')
+    print('#'*80, '\n\n')
+    
     
 @rank_zero_only
 def print_metrics(miou, ious):
