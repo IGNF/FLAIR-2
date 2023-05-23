@@ -4,7 +4,7 @@ from rich.style import Style
 from rich.tree import Tree
 from pytorch_lightning.utilities.distributed import rank_zero_only 
 
-@rnak_zero_only
+@rank_zero_only
 def print_recap(config, dict_train, dict_val, dict_test):
     print('\n+'+'='*80+'+',f"{'Model name: '+config.out_model_name : ^80}", '+'+'='*80+'+', f"{'[---TASKING---]'}", sep='\n')
     for info, val in zip(["use metadata", "use augmentation"], [config.use_metadata, config.use_augmentation]): print(f"- {info:25s}: {'':3s}{val}")
