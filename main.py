@@ -156,13 +156,14 @@ def main(config):
     
     trainer.predict(seg_module, datamodule=data_module)
     
-    dist.barrier()
-    torch.cuda.synchronize()
-    ender.record()
-  
+    if config['strategy'] != None:
+        dist.barrier()
+        torch.cuda.synchronize()
+    ender.record()  
+    torch.cuda.empty_cache() 
+    
     inference_time_seconds = starter.elapsed_time(ender) / 1000.0     
     print_inference_time(inference_time_seconds, config)
-
 
     @rank_zero_only
     def print_finish():
