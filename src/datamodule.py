@@ -71,7 +71,7 @@ class DataModule(LightningDataModule):
     def predict_dataloader(self):
         return DataLoader(
             dataset=self.pred_dataset,
-            batch_size=1, 
+            batch_size=self.config['batch_size_inference'], 
             shuffle=False,
             num_workers=self.config["num_workers"],
             drop_last=self.drop_last,
