@@ -17,11 +17,11 @@ import albumentations as A
 from src.backbones.txt_model import TimeTexture_flair
 from src.datamodule import DataModule
 from src.task_module import SegmentationTask
-from src.utils_prints import print_config, print_metrics
+from src.utils_prints import print_config, print_metrics, print_inference_time
 from src.utils_dataset import read_config
 from src.load_data import load_data
 from src.prediction_writer import PredictionWriter
-from src.metrics import generate_miou
+#from src.metrics import generate_miou
 
 
 argParser = argparse.ArgumentParser()
@@ -148,7 +148,20 @@ def main(config):
         enable_progress_bar = config["enable_progress_bar"],
     )
 
+    
+    ## Enable time measurement 
+    starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)   
+    starter.record()     
+    
     trainer.predict(seg_module, datamodule=data_module)
+    
+    dist.barrier()
+    torch.cuda.synchronize()
+    ender.record()
+  
+    inference_time_seconds = starter.elapsed_time(ender) / 1000.0     
+    print_inference_time(inference_time_seconds, config)
+
 
     @rank_zero_only
     def print_finish():
