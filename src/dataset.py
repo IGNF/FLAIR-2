@@ -50,12 +50,6 @@ class Fit_Dataset(Dataset):
             labels = src_label.read()[0]
             labels[labels > self.num_classes] = self.num_classes
             labels = labels-1
-            #if resize_to_sat:
-            #    to_remove = (labels.shape[0] - pix_tokeep)//2
-            #    subset_labels = labels[to_remove:to_remove+pix_tokeep,to_remove:to_remove+pix_tokeep]
-            #    resized_labels = T.Resize(10, interpolation=InterpolationMode.NEAREST)(torch.as_tensor(subset_labels, dtype=torch.int).unsqueeze(0))
-            #    resized_labels = torch.squeeze(resized_labels)
-            #    return labels, resized_labels
             return labels, labels
 
 
