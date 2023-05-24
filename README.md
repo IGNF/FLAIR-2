@@ -107,7 +107,10 @@ Please include a citation to the following article if you use the FLAIR #2 datas
 ```
 
 ## Acknowledgment
-This work was performed using HPC/AI resources from GENCI-IDRIS (Grant 2022-A0131013803). This work was supported by the project "Copernicus / FPCUP” of the European Union, by the French Space Agency (CNES) and by Connect by CNES.
+This work was performed using HPC/AI resources from GENCI-IDRIS (Grant 2022-A0131013803). This work was supported by the project "Copernicus / FPCUP” of the European Union, by the French Space Agency (CNES) and by Connect by CNES.<br>
+<img width="100%" src="images/flair-2_logos-hd.png">
+
+
 
 
 ## Dataset license
