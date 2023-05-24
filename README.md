@@ -15,7 +15,7 @@ Participate in obtaining more accurate maps for a more comprehensive description
 
 - **Datapaper : coming soon.** 
 
-- **Dataset links :** https://ignf.github.io/FLAIR/ [🛑 for now upon registration to the FLAIR #2 challenge !]
+- **Dataset links :** https://ignf.github.io/FLAIR/#FLAIR2 [🛑 for now upon registration to the FLAIR #2 challenge !]
 
 - **Challenge page : coming soon.** 
 
