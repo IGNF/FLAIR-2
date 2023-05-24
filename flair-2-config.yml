@@ -49,7 +49,7 @@ num_classes: 13
 num_channels_aerial: 5 
 num_channels_sat: 10 
 # Training
-num_epochs: 100
+num_epochs: 1
 batch_size: 10
 batch_size_inference: 1
 lr: 0.001
