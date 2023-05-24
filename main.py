@@ -52,7 +52,7 @@ def main(config):
         dict_test=d_test,
         config=config,
         drop_last=True,
-        use_augmentation = transform_set 
+        augmentation_set = transform_set 
     )
 
     model = TimeTexture_flair(config)

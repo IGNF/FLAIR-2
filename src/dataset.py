@@ -16,7 +16,7 @@ class Fit_Dataset(Dataset):
     def __init__(self,
                  dict_files,
                  config,
-                 use_augmentation=None
+                 augmentation_set=None
                  ):
 
         self.list_imgs = np.array(dict_files["PATH_IMG"])
@@ -26,7 +26,7 @@ class Fit_Dataset(Dataset):
         self.list_sp_masks = np.array(dict_files["PATH_SP_MASKS"])
         self.list_labels = np.array(dict_files["PATH_LABELS"])
 
-        self.use_augmentation = use_augmentation
+        self.augmentation_set = augmentation_set
         self.use_metadata = config['aerial_metadata']
         if self.use_metadata == True:
             self.list_metadata = np.array(dict_files["MTD_AERIAL"])
@@ -105,9 +105,9 @@ class Fit_Dataset(Dataset):
         labels_file = self.list_labels[index]
         labels, s_labels = self.read_labels(raster_file=labels_file)  
 
-        if self.use_augmentation is not None:
+        if self.augmentation_set is not None:
             sample = {"image" : img.swapaxes(0, 2).swapaxes(0, 1), "mask": labels[None,:,:].swapaxes(0, 2).swapaxes(0, 1)}
-            transformed_sample = self.use_augmentation(**sample)
+            transformed_sample = self.augmentation_set(**sample)
             img, labels = transformed_sample["image"].swapaxes(0, 2).swapaxes(1, 2).copy(), transformed_sample["mask"].swapaxes(0, 2).swapaxes(1, 2).copy()[0] 
 
         img = img_as_float(img)

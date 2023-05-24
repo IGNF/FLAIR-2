@@ -11,7 +11,7 @@ class DataModule(LightningDataModule):
         dict_test=None,
         config=None,
         drop_last=True,
-        use_augmentation=False,
+        augmentation_set=None,
         
     ):
         super().__init__()
@@ -23,7 +23,7 @@ class DataModule(LightningDataModule):
         self.pred_dataset = None
         self.drop_last = drop_last
         self.config = config
-        self.use_augmentation = use_augmentation
+        self.augmentation_set = augmentation_set
 
 
     def prepare_data(self):
@@ -34,7 +34,7 @@ class DataModule(LightningDataModule):
             self.train_dataset = Fit_Dataset(
                 dict_files=self.dict_train,
                 config=self.config,
-                use_augmentation=self.use_augmentation,
+                augmentation_set=self.augmentation_set,
             )
 
             self.val_dataset = Fit_Dataset(
