@@ -54,7 +54,7 @@ class Fit_Dataset(Dataset):
 
 
     def read_superarea_and_crop(self, numpy_file: str, idx_centroid: list) -> np.ndarray:
-        data = np.load(numpy_file)
+        data = np.load(numpy_file, mmap_mode='r')
         subset_sp = data[:,:,idx_centroid[0]-int(self.sat_patch_size/2):idx_centroid[0]+int(self.sat_patch_size/2),idx_centroid[1]-int(self.sat_patch_size/2):idx_centroid[1]+int(self.sat_patch_size/2)]
         return subset_sp
 
@@ -177,7 +177,7 @@ class Predict_Dataset(Dataset):
 
 
     def read_superarea_and_crop(self, numpy_file: str, idx_centroid: list) -> np.ndarray:
-        data = np.load(numpy_file)
+        data = np.load(numpy_file, , mmap_mode='r')
         subset_sp = data[:,:,idx_centroid[0]-int(self.sat_patch_size/2):idx_centroid[0]+int(self.sat_patch_size/2),idx_centroid[1]-int(self.sat_patch_size/2):idx_centroid[1]+int(self.sat_patch_size/2)]
         return subset_sp
 
