@@ -154,7 +154,7 @@ def main(config):
     starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)   
     starter.record()     
     
-    trainer.predict(seg_module, datamodule=data_module)
+    trainer.predict(seg_module, datamodule=data_module, return_predictions=False)
     
     if config['strategy'] != None:
         dist.barrier()
