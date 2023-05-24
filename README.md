@@ -12,11 +12,11 @@ Participate in obtaining more accurate maps for a more comprehensive description
 <h2 style="margin-top:5px;">Links</h2>
 
 
-- **Datapaper :** 
+- **Datapaper : coming soon.** 
 
 - **Dataset links :** https://ignf.github.io/FLAIR/ [🛑 for now upon registration to the FLAIR #2 challenge !]
 
-- **Challenge page :** 
+- **Challenge page : coming soon.** 
 
 </div>
 <br><br>
