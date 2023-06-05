@@ -5,7 +5,7 @@ omegaconf>=2.2.3
 pandas>=1.4.3
 Pillow>=9.3.0
 pytorch>=1.12.1
-pytorch_lightning>=1.5.10
+pytorch_lightning>=1.5.10, <2.0.0
 PyYAML==6.0
 rasterio>=1.2.8
 rich==13.4.1
