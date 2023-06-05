@@ -63,7 +63,7 @@ def main(config):
     #track_model()
 
     # Optimizer and Loss
-    optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])
+    optimizer = torch.optim.SGD(model.parameters(), lr=config["lr"])
 
     with torch.no_grad():
         weights_aer = torch.FloatTensor(np.array(list(config['weights_aerial_satellite'].values()))[:,0])
