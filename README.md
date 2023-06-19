@@ -86,7 +86,7 @@ Please note that for participants to the FLAIR #2 challenge on CodaLab, a certai
 | baseline U-T&T + _filter clouds + monthly averages + data augmentation_ | aerial and satellite imagery | 0.5758
 
 If you want to submit a new entry, you can open a new issue.
-<b> Results of the challenge will be reported soon! </b>
+<b> Results of the challenge will be reported after the end of the challenge early October! </b>
 
 The baseline U-T&T + _filter clouds + monthly averages + data_augmentation_ obtains the following confusion matrix: 
 
