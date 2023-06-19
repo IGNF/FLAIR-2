@@ -91,7 +91,7 @@ If you want to submit a new entry, you can open a new issue.
 The baseline U-T&T + _filter clouds + monthly averages + data_augmentation_ obtains the following confusion matrix: 
 
 <p align="center">
-  <img width="50%" src="images/flair-2_confmat.png">
+  <img width="50%" src="images/flair-2-confmat.png">
   <br>
   <em>Baseline confusion matrix of the test dataset normalized by rows.</em>
 </p>
