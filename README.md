@@ -90,15 +90,14 @@ If you want to submit a new entry, you can open a new issue.
 
 The baseline U-T&T + _filter clouds + monthly averages + data_augmentation_ obtains the following confusion matrix: 
 
-<!---
 <p align="center">
-  <img width="50%" src="images/flair-1_heatmap.png">
+  <img width="50%" src="images/flair-2_confmat.png">
   <br>
   <em>Baseline confusion matrix of the test dataset normalized by rows.</em>
 </p>
--->
 
-<br><br>
+
+<br><br><br>
 
 ## Reference
 Please include a citation to the following article if you use the FLAIR #2 dataset:
