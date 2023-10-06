@@ -72,7 +72,7 @@ class TimeTexture_flair(nn.Module):
     def forward(self, config, bpatch, bspatch, dates, metadata):
         
         ### encoded feature maps and utae outputs
-        utae_out , utae_fmaps_dec = self.arch_hr(bspatch, batch_positions=dates)  ### utae class scores and feature maps 
+        _ , utae_fmaps_dec = self.arch_hr(bspatch, batch_positions=dates)  ### utae class scores and feature maps 
         unet_fmaps_enc = self.arch_vhr.encoder(bpatch)  ### unet feature maps 
         
         ### aerial metadatat encoding and adding to u-net feature maps
@@ -105,8 +105,8 @@ class TimeTexture_flair(nn.Module):
         
         ### reshape utae output to annotation shape
         transform = T.CenterCrop((10, 10))
-        utae_last_fmaps_reshape = transform(utae_fmaps_dec[-1])  
-        utae_out = self.reshape_utae_output(utae_last_fmaps_reshape)
+        utae_out = transform(utae_fmaps_dec[-1])  
+        utae_out = self.reshape_utae_output(utae_out)
 
         return utae_out, unet_out
     
