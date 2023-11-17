@@ -20,7 +20,7 @@ w_unet_utae: [1,1]
 drop_utae_modality: 0.0 # 1 = dropping U-TAE branch
 
 # MTD and AUG
-aerial_metadata: False
+aerial_metadata: True
 geo_enc_size: 32
 use_augmentation: True
 
