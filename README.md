@@ -104,13 +104,12 @@ The baseline U-T&T + _filter clouds + monthly averages + data_augmentation_ obta
 Please include a citation to the following article if you use the FLAIR #2 dataset:
 
 ```
-@article{ign2023flair2,
-  doi = {10.13140/RG.2.2.30938.93128/2},
-  url = {https://arxiv.org/pdf/2305.14467.pdf},
-  author = {Garioud, Anatol and {DE Wit}, Apolline and Poupée, Marc and Valette, Marion and Giordano, Sébastien and Wattrelos, Boris},
-  title = {FLAIR #2: textural and temporal information for semantic segmentation from multi-source optical imagery},
-  publisher = {arXiv},
-  year = {2023}
+@inproceedings{ign2023flair2,
+      title={FLAIR: a Country-Scale Land Cover Semantic Segmentation Dataset From Multi-Source Optical Imagery}, 
+      author={Anatol Garioud and Nicolas Gonthier and Loic Landrieu and Apolline De Wit and Marion Valette and Marc Poupée and Sébastien Giordano and Boris Wattrelos},
+      year={2023},
+      booktitle={Advances in Neural Information Processing Systems (NeurIPS) 2023},
+      doi={https://doi.org/10.48550/arXiv.2310.13336},
 }
 ```
 
