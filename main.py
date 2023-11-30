@@ -22,7 +22,7 @@ from src.utils_prints import print_config, print_metrics, print_inference_time
 from src.utils_dataset import read_config
 from src.load_data import load_data
 from src.prediction_writer import PredictionWriter
-#from src.metrics import generate_miou
+from src.metrics import generate_miou
 
 
 argParser = argparse.ArgumentParser()
@@ -169,13 +169,12 @@ def main(config):
     def print_finish():
         print('--  [FINISHED.]  --', f'output dir : {out_dir}', sep='\n') 
     print_finish()   
-    
-    
-    # Compute mIoU over the predictions - not done here as the test labels are not available, but if needed, you can use the generate_miou function from metrics.py  
-    #truth_msk = config['data']['path_labels_test']
-    #pred_msk  = os.path.join(out_dir, "predictions"+"_"+config["out_model_name"])
-    #mIou, ious = generate_miou(truth_msk, pred_msk)
-    #print_metrics(mIou, ious)    
+
+    # Compute mIoU over the predictions - not done here as the test labels are not available, but if needed, you can use the generate_miou function from metrics.py      
+    truth_msk = config['data']['path_labels_test']
+    pred_msk  = os.path.join(out_dir, "predictions"+"_"+config["out_model_name"])
+    mIou, ious = generate_miou(truth_msk, pred_msk)
+    print_metrics(mIou, ious)    
  
 
 if __name__ == "__main__":
