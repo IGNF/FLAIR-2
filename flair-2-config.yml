@@ -5,6 +5,7 @@ data:
  
     path_aerial_test: "" # ./flair_2_aerial_test/
     path_sen_test: "" # ./flair_2_sen_test/
+    path_labels_test: ""
 
     path_sp_centroids: "" # ./flair_2_centroids_sp_to_patch.json
     path_metadata_aerial: "" # ./flair_aerial_metadata.json
