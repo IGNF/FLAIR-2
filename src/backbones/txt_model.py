@@ -6,9 +6,7 @@ import segmentation_models_pytorch as smp
 
 from src.backbones.utae_model import UTAE
 from src.backbones.fusion_utils import *
-
-
-
+import torch.nn.functional as F
 
     
 class TimeTexture_flair(nn.Module):
@@ -67,10 +65,54 @@ class TimeTexture_flair(nn.Module):
         self.reshape_utae_output = nn.Sequential(nn.Upsample(size=(512,512), mode='nearest'),
                                                  nn.Conv2d(self.arch_hr.encoder_widths[0], config['num_classes'], 1) 
                                                 )
+        self.upsampling_factor = config.get('upsampling_factor', 1)
 
-            
-    def forward(self, config, bpatch, bspatch, dates, metadata):
+        self.center_crop_dimension = 10
+
+    def _upsample_hr_patch(self, bspatch):
+        """
+        Function to upsample the high resolution patch to specified upsampling factor
+        """
+        if self.upsampling_factor <= 1:
+            return bspatch
         
+        batch_size, channels, temporal, height, width = bspatch.shape
+
+        # Reshape to 4D (batch * temporal, channels, height, width)
+        reshaped_tensor = bspatch.view(-1, channels, height, width)
+
+        # Define the scaling factor
+        scale_factor = self.upsampling_factor
+
+        # Calculate the output size
+        new_height = height * scale_factor
+        new_width = width * scale_factor
+
+        # Upsample the tensor using nn.Upsample with scale_factor
+        upsample_layer = nn.Upsample(scale_factor=scale_factor, mode='bicubic', align_corners=False)
+        upsampled_tensor = upsample_layer(reshaped_tensor)
+
+        # Reshape back to 5D
+        return upsampled_tensor.view(batch_size, channels, temporal, new_height, new_width)
+    
+    def _crop_downsample_patch(self, patch):
+        """
+        Function to crop and downsample images
+        """
+        transform_crop = T.CenterCrop((self.upsampling_factor * self.center_crop_dimension, 
+                                       self.upsampling_factor * self.center_crop_dimension))
+        cropped_patch = transform_crop(patch)
+
+        if self.upsampling_factor <= 1:
+            return cropped_patch
+        
+        return F.interpolate(cropped_patch, size=(self.center_crop_dimension, self.center_crop_dimension), mode='bicubic', align_corners=False)
+
+    
+    def forward(self, config, bpatch, bspatch, dates, metadata):
+        if self.upsampling_factor > 1:
+            bspatch = self._upsample_hr_patch(bspatch)
+
         ### encoded feature maps and utae outputs
         _ , utae_fmaps_dec = self.arch_hr(bspatch, batch_positions=dates)  ### utae class scores and feature maps 
         unet_fmaps_enc = self.arch_vhr.encoder(bpatch)  ### unet feature maps 
@@ -82,8 +124,7 @@ class TimeTexture_flair(nn.Module):
             unet_fmaps_enc[-1] = torch.add(unet_fmaps_enc[-1], x_enc) 
         
         ### cropped fusion module
-        transform = T.CenterCrop((10, 10))
-        utae_last_fmaps_reshape_cropped = transform(utae_fmaps_dec[-1])    
+        utae_last_fmaps_reshape_cropped = self._crop_downsample_patch(utae_fmaps_dec[-1])
         utae_last_fmaps_reshape_cropped = self.fm_utae_featmap_cropped(utae_last_fmaps_reshape_cropped, [i.size()[-1] for i in unet_fmaps_enc])       
         
         ### collapsed fusion module       
@@ -104,8 +145,7 @@ class TimeTexture_flair(nn.Module):
         unet_out = self.arch_vhr.segmentation_head(unet_out) ### unet class scores 
         
         ### reshape utae output to annotation shape
-        transform = T.CenterCrop((10, 10))
-        utae_out = transform(utae_fmaps_dec[-1])  
+        utae_out = self._crop_downsample_patch(utae_fmaps_dec[-1])
         utae_out = self.reshape_utae_output(utae_out)
 
         return utae_out, unet_out

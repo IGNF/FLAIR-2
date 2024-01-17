@@ -1,3 +1,7 @@
+# folders to exclude
+flair_2_toy_dataset/
+test-output/
+lightning_logs/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 src/__pycache__/

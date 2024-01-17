@@ -1,16 +1,16 @@
 data:
-    path_aerial_train: "" # ./flair_aerial_train/
-    path_sen_train: ""  # ./flair_sen_train/
-    path_labels_train: "" # ./flair_labels_train/
+    path_aerial_train: ".\\flair_2_toy_dataset\\flair_2_toy_aerial_train\\" # ./flair_aerial_train/
+    path_sen_train: ".\\flair_2_toy_dataset\\flair_2_toy_sen_train\\"  # ./flair_sen_train/
+    path_labels_train: ".\\flair_2_toy_dataset\\flair_2_toy_labels_train\\" # ./flair_labels_train/
  
-    path_aerial_test: "" # ./flair_2_aerial_test/
-    path_sen_test: "" # ./flair_2_sen_test/
-    path_labels_test: ""
+    path_aerial_test: ".\\flair_2_toy_dataset\\flair_2_toy_aerial_test\\" # ./flair_2_aerial_test/
+    path_sen_test: ".\\flair_2_toy_dataset\\flair_2_toy_sen_test\\" # ./flair_2_sen_test/
+    path_labels_test: ".\\flair_2_toy_dataset\\flair_2_toy_labels_test\\"
 
-    path_sp_centroids: "" # ./flair_2_centroids_sp_to_patch.json
-    path_metadata_aerial: "" # ./flair_aerial_metadata.json
+    path_sp_centroids: ".\\flair_2_toy_dataset\\flair-2_centroids_sp_to_patch.json" # ./flair_2_centroids_sp_to_patch.json
+    path_metadata_aerial: ".\\flair_2_toy_dataset\\flair-2_aerial_metadata.json" # ./flair_aerial_metadata.json
 
-out_folder: "./flair2/"
+out_folder: ".\\test-output\\"
 out_model_name: "flair-2-baseline"
 
 
@@ -50,13 +50,13 @@ num_classes: 13
 num_channels_aerial: 5 
 num_channels_sat: 10 
 # Training
-num_epochs: 100
-batch_size: 10
+num_epochs: 20
+batch_size: 3
 batch_size_inference: 1
 lr: 0.001
 
 # Computation
-num_workers: 10
+num_workers: 5
 accelerator: gpu # or cpu
 gpus_per_node: 1
 num_nodes: 1

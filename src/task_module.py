@@ -29,14 +29,14 @@ class SegmentationTask(pl.LightningModule):
         if stage == "fit":
             self.train_epoch_loss, self.val_epoch_loss = None, None
             self.train_epoch_metrics, self.val_epoch_metrics = None, None
-            self.train_metrics = JaccardIndex(task='multiclass',num_classes=self.num_classes,absent_score=1.0,reduction='elementwise_mean')
-            self.val_metrics   = JaccardIndex(task='multiclass',num_classes=self.num_classes,absent_score=1.0,reduction='elementwise_mean')
+            self.train_metrics = JaccardIndex(task='multiclass',num_classes=self.num_classes)
+            self.val_metrics   = JaccardIndex(task='multiclass',num_classes=self.num_classes)
             self.train_loss = MeanMetric()
             self.val_loss   = MeanMetric()
 
         elif stage == "validate":
             self.val_epoch_loss, self.val_epoch_metrics = None, None
-            self.val_metrics   = JaccardIndex(task='multiclass',num_classes=self.num_classes,absent_score=1.0,reduction='elementwise_mean')
+            self.val_metrics   = JaccardIndex(task='multiclass',num_classes=self.num_classes)
             self.val_loss   = MeanMetric()
 
     def on_train_start(self):

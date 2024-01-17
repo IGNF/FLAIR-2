@@ -2,7 +2,7 @@ from omegaconf import DictConfig, ListConfig
 from rich import get_console
 from rich.style import Style
 from rich.tree import Tree
-from pytorch_lightning.utilities.distributed import rank_zero_only 
+from pytorch_lightning.utilities import rank_zero_only 
 from datetime import timedelta
 
 @rank_zero_only

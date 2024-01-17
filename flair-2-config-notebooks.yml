@@ -1,0 +1,85 @@
+data:
+    path_aerial_train: "..\\flair_2_toy_dataset\\flair_2_toy_aerial_train\\" # ./flair_aerial_train/
+    path_sen_train: "..\\flair_2_toy_dataset\\flair_2_toy_sen_train\\"  # ./flair_sen_train/
+    path_labels_train: "..\\flair_2_toy_dataset\\flair_2_toy_labels_train\\" # ./flair_labels_train/
+ 
+    path_aerial_test: "..\\flair_2_toy_dataset\\flair_2_toy_aerial_test\\" # ./flair_2_aerial_test/
+    path_sen_test: "..\\flair_2_toy_dataset\\flair_2_toy_sen_test\\" # ./flair_2_sen_test/
+    path_labels_test: "..\\flair_2_toy_dataset\\flair_2_toy_labels_test\\"
+
+    path_sp_centroids: "..\\flair_2_toy_dataset\\flair-2_centroids_sp_to_patch.json" # ./flair_2_centroids_sp_to_patch.json
+    path_metadata_aerial: "..\\flair_2_toy_dataset\\flair-2_aerial_metadata.json" # ./flair_aerial_metadata.json
+
+out_folder: "..\\test-output\\"
+out_model_name: "flair-2-baseline"
+
+
+
+#Fusion
+sat_patch_size: 40 # in [8,112] and multiple of 8 
+w_unet_utae: [1,1]
+drop_utae_modality: 0.0 # 1 = dropping U-TAE branch
+
+# MTD and AUG
+aerial_metadata: True
+geo_enc_size: 32
+use_augmentation: True
+
+# Sentinel Time Series filtering
+filter_clouds: True
+average_month: True
+
+# Weighting
+weights_aerial_satellite:
+                         building               : [1,1]
+                         pervious surface       : [1,1]
+                         impervious surface     : [1,1]
+                         bare soil              : [1,1]
+                         water                  : [1,1]
+                         coniferous             : [1,1]
+                         deciduous              : [1,1]
+                         brushwood              : [1,1]
+                         vineyard               : [1,1]
+                         herbaceous vegetation  : [1,1]
+                         agricutural land       : [1,1]
+                         plowed land            : [1,0]
+                         other                  : [0,0]
+
+# Inputs
+num_classes: 13
+num_channels_aerial: 5 
+num_channels_sat: 10 
+# Training
+num_epochs: 100
+batch_size: 10
+batch_size_inference: 1
+lr: 0.001
+
+# Computation
+num_workers: 5
+accelerator: gpu # or cpu
+gpus_per_node: 1
+num_nodes: 1
+strategy: null # ddp if multi-gpu
+
+
+# UTAE Model
+encoder_widths: [64,64,128,128] # 1st and last must be equivalent to decoder_widths
+decoder_widths: [64,64,128,128] # 1st and last must be equivalent to encoder_widths
+out_conv: [32, 13]
+str_conv_k: 4
+str_conv_s: 2
+str_conv_p: 1
+agg_mode: att_group
+encoder_norm: group
+n_head: 16
+d_model: 256
+d_k: 4
+ref_year: 2021 # defined for whole dataset
+ref_date: 05-15 # defined for whole dataset
+pad_value: 0
+padding_mode: reflect
+
+#Tracking
+enable_progress_bar: True
+progress_rate: 10

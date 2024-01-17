@@ -11,7 +11,7 @@ from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.callbacks.progress.tqdm_progress import TQDMProgressBar
 from pytorch_lightning import Trainer, seed_everything
-from pytorch_lightning.utilities.distributed import rank_zero_only 
+from pytorch_lightning.utilities import rank_zero_only 
 
 import albumentations as A
 
@@ -54,9 +54,10 @@ def main(config):
         drop_last=True,
         augmentation_set = transform_set 
     )
+    config['upsampling_factor'] = 4
 
     model = TimeTexture_flair(config)
-
+    
     #@rank_zero_only
     #def track_model():
     #    print(model)
@@ -91,9 +92,9 @@ def main(config):
     )
 
     early_stop_callback = EarlyStopping(
-        monitor="val_loss",
+        monitor="train_loss",
         min_delta=0.00,
-        patience=30, # if no improvement after 30 epoch, stop learning. 
+        patience=10, # if no improvement after 30 epoch, stop learning. 
         mode="min",
     )
 
@@ -127,6 +128,7 @@ def main(config):
         callbacks = callbacks,
         logger=loggers,
         enable_progress_bar = config["enable_progress_bar"],
+        log_every_n_steps=1
     )
 
     trainer.fit(seg_module, datamodule=data_module)
@@ -180,7 +182,6 @@ def main(config):
 if __name__ == "__main__":
 
     args = argParser.parse_args()
-  
     config = read_config(args.config_file)
 
     assert config["num_classes"] == config["out_conv"][-1]
