@@ -56,17 +56,13 @@ def print_config(config: DictConfig) -> None:
                 walk_config(branch, group_option)
             elif isinstance(group_option, ListConfig):
                 if not group_option:
-                    #print('THERE')
                     tree.add(f'{group_name}: []', style=Style(color='yellow', bold=True))
                 else:
-                    #print('THA')
                     tree.add(f'{str(group_name)}: {group_option}', style=Style(color='yellow', bold=True))
             else:
                 if group_name == '_target_':
-                    #print('THI')
                     tree.add(f'{str(group_name)}: {group_option}', style=Style(color='white', italic=True, bold=True))
                 else:
-                    #print('THO')
                     tree.add(f'{str(group_name)}: {group_option}', style=Style(color='yellow', bold=True))
     tree = Tree(
         ':deciduous_tree: Configuration Tree ',
