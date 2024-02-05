@@ -170,7 +170,6 @@ def main(config):
         print('--  [FINISHED.]  --', f'output dir : {out_dir}', sep='\n') 
     print_finish()   
 
-    # Compute mIoU over the predictions - not done here as the test labels are not available, but if needed, you can use the generate_miou function from metrics.py      
     truth_msk = config['data']['path_labels_test']
     pred_msk  = os.path.join(out_dir, "predictions"+"_"+config["out_model_name"])
     mIou, ious = generate_miou(truth_msk, pred_msk)
