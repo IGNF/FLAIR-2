@@ -21,10 +21,7 @@ def print_inference_time(tt, config):
     print('','','#'*80,' '*28+'--- INFERENCE TIME ---', sep='\n')
     print('- nodes: ', config['num_nodes'])
     print('- gpus per nodes: ', config['gpus_per_node'])
-    print('[MAX FOR VALID MODEL] : 0:25:00 HH:MM:SS',
-          f'[CURRENT]             : {str(timedelta(seconds=tt))} HH:MM:SS','',sep='\n') 
-    if tt > 1500: print('[X] INFERENCE TOO LONG')
-    else: print('[V] INFERENCE TIME BELOW MAX !', '\n\n')
+    print(f'[CURRENT]             : {str(timedelta(seconds=tt))} HH:MM:SS','',sep='\n') 
     print('#'*80, '\n\n')
     
     
