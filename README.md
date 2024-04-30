@@ -115,7 +115,7 @@ The baseline U-T&T + _filter clouds + monthly averages + data_augmentation_ obta
 ## Reference
 Please include a citation to the following article if you use the FLAIR #2 dataset:
 
-```
+```bibtex
 @inproceedings{ign2023flair2,
       title={FLAIR: a Country-Scale Land Cover Semantic Segmentation Dataset From Multi-Source Optical Imagery}, 
       author={Anatol Garioud and Nicolas Gonthier and Loic Landrieu and Apolline De Wit and Marion Valette and Marc Poupée and Sébastien Giordano and Boris Wattrelos},
