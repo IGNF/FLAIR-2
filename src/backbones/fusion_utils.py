@@ -72,7 +72,7 @@ class FM_collapsed(nn.Module):
 #### IF USING AERIAL METADATA
 class mtd_encoding_mlp(nn.Module):
     """ 
-    Light MLP to format aertial metadata
+    Light MLP to format aerial metadata
     """
     def __init__(self, in_, out_):
         super(mtd_encoding_mlp, self).__init__()
