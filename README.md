@@ -1,6 +1,7 @@
 <div align="center">
 
-# Challenge FLAIR #2: textural and temporal information for semantic segmentation from multi-source optical imagery
+# FLAIR #2:
+# multi-source optical imagery and semantic segmantation
 
 
 
