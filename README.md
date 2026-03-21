@@ -13,7 +13,7 @@
 
 
 
-Participate in obtaining more accurate maps for a more comprehensive description and a better understanding of our environment! Come push the limits of state-of-the-art semantic segmentation approaches on a large and challenging dataset. Get in touch at ai-challenge@ign.fr
+Participate in obtaining more accurate maps for a more comprehensive description and a better understanding of our environment! Come push the limits of state-of-the-art semantic segmentation approaches on a large and challenging dataset. Get in touch at flair@ign.fr
 
 
 ![Alt bandeau FLAIR-IGN](images/flair_bandeau.jpg?raw=true)
